@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Rise Slides Widget</title>
+  </head>
+  <body style="margin: 0px;">
+    <rise-playlist-item>
+      <rise-slides></rise-slides>
+    </rise-playlist-item>
+    <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
+    <script src="https://storage.googleapis.com/install-versions.risevision.com/staging/components/rise-playlist-item/2017.12.11.23.40/rise-playlist-item.js"></script>
+    <script src="<%= htmlWebpackPlugin.files.chunks['component'].entry %>"></script>
+  </body>
+  <script>
+    if (document.domain.indexOf("localhost") === -1) {
+      try {
+        document.domain = "risevision.com";
+      } catch (err) {
+        // can't set document.domain, risevision.com not an accepted suffix of current document domain
+      }
+    }
+  </script>
+  <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
+  <script src="<%=process.env.NODE_ENV !== 'production'
+   ? 'https://storage.googleapis.com/rise-content/stable/components/rise-playlist-item/rise-playlist-item.js'
+   : '../rise-playlist-item/rise-playlist-item.js' %>">
+  </script>
+  <script src="<%= htmlWebpackPlugin.files.chunks['component'].entry %>"></script>
+</html>

@@ -14,17 +14,18 @@ describe('Slides Component - Integration', () => {
   });
 
   beforeEach(()=>{
-    const sendLicensing = () => {
-      commonConfig.broadcastMessage({
-        from: 'slides-module',
-        topic: 'licensing-update',
-        through: 'ws',
-        data: {
-          'is_authorized': true,
-          'user_friendly_status': 'authorized'
-        }
-      });
-    }
+    // TODO: licensing is not implemented yet
+    // const sendLicensing = () => {
+    //   commonConfig.broadcastMessage({
+    //     from: 'slides-module',
+    //     topic: 'licensing-update',
+    //     through: 'ws',
+    //     data: {
+    //       'is_authorized': true,
+    //       'user_friendly_status': 'authorized'
+    //     }
+    //   });
+    // }
 
     mock(console, "log");
     mock(commonConfig, "getDisplaySettingsSync").returnWith({
@@ -44,9 +45,12 @@ describe('Slides Component - Integration', () => {
   it('should load component', () => {
     browser.url('/');
 
-    const selector = 'rise-slides .slides-component-template';
-    const expected = "Rise Slides Component";
-    browser.waitForText(selector);
-    browser.getText(selector).should.be.equal(expected);
+    const strSurrogateFrameSelector = 'rise-slides .slides-component-template .webpage-frame';
+    browser.frame();  
+    browser.waitForExist(strSurrogateFrameSelector, 15000);
+    browser.frame($(strSurrogateFrameSelector).value, function(err, result) {
+      if (err) console.log(err);
+      expect(err).to.be.a('null');
+    });
   });
 });

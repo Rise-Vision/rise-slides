@@ -9,9 +9,6 @@
     <rise-playlist-item>
       <rise-slides></rise-slides>
     </rise-playlist-item>
-    <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
-    <script src="https://storage.googleapis.com/install-versions.risevision.com/staging/components/rise-playlist-item/2017.12.11.23.40/rise-playlist-item.js"></script>
-    <script src="<%= htmlWebpackPlugin.files.chunks['component'].entry %>"></script>
   </body>
   <script>
     if (document.domain.indexOf("localhost") === -1) {
@@ -22,9 +19,10 @@
       }
     }
   </script>
+
   <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
   <script src="<%=process.env.NODE_ENV !== 'production'
-   ? 'https://storage.googleapis.com/rise-content/stable/components/rise-playlist-item/rise-playlist-item.js'
+   ? 'https://widgets.risevision.com/beta/components/rise-playlist-item/rise-playlist-item.js'
    : '../rise-playlist-item/rise-playlist-item.js' %>">
   </script>
   <script src="<%= htmlWebpackPlugin.files.chunks['component'].entry %>"></script>

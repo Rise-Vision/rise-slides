@@ -1,8 +1,7 @@
 export default class Slides {
-  constructor(shadowRoot, url, playListItem, width, height) {
+  constructor(shadowRoot, url, width, height) {
     this.shadowRoot = shadowRoot;
     this.url = url;
-    this.playListItem = playListItem;
     this.width = width + 'px';
     this.height = height + 'px';
   }
@@ -12,13 +11,11 @@ export default class Slides {
   }
 
   stop() {
-    this.pause();
+    // do nothing for now
   }
 
   _loadFrame() {
     var frame = this._getFrameElement();
-
-    frame.setAttribute('src', this.url);
 
     this.shadowRoot.querySelector('.slides-component-template').appendChild(frame);
   }
@@ -42,6 +39,8 @@ export default class Slides {
       this.onload = null;
       this.style.visibility = 'visible';
     }
+
+    frame.setAttribute('src', this.url);
 
     return frame;
   }

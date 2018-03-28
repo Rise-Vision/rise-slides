@@ -14,6 +14,10 @@ export default class RiseSlides extends HTMLElement {
     console.log('RiseSlides');
   }
 
+  getSlides() {
+    return this.slides;
+  }
+
   connectedCallback() {
     console.log('RiseSlides', this.shadowRoot);
     this.playlistItem = this.parentElement;
@@ -55,7 +59,7 @@ export default class RiseSlides extends HTMLElement {
     this.config.setDisplayId(event.detail.displayId);
     this.config.setCompanyId(event.detail.companyId);
     console.log('_handleConfigure', event);
-    if (event.detail) {
+    if (event.detail && event.detail.displayId !== 'preview') {
       this.url = event.detail.url;
       this.id = event.detail.componentId;
       this.width = event.detail.width;
@@ -70,11 +74,13 @@ export default class RiseSlides extends HTMLElement {
       this.eventHandler = new EventHandler(this.logger, this.playlistItem);
       this._validadeConfiguration();
 
-      this.slides = new Slides(this.shadowRoot, this.url, this.playlistItem, this.width, this.height);
+      this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
       this.eventHandler.emitReady();
       this.logger.playlistEvent('Configure Event', {configureObject: JSON.stringify(event.detail)});
     } else {
-      this.logger.error('Error: configuration is missing');
+      this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
+      this.isPreview = true;
+      this.eventHandler.emitReady();
     }
   }
 

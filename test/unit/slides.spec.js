@@ -11,6 +11,7 @@ describe("Slides - Unit", () => {
     const shadowRoot = {};
     shadowRootQuerySelector = {};
     shadowRootQuerySelector.appendChild = jest.genMockFn();
+    shadowRootQuerySelector.removeChild = jest.genMockFn();
     shadowRoot.querySelector = jest.fn(function() {
       return shadowRootQuerySelector;
     })
@@ -43,5 +44,12 @@ describe("Slides - Unit", () => {
     const frame = slides._getFrameElement();
 
     expect(frame.getAttribute("src")).toBe(testUrl);
+  });
+
+  it("should remove iframe on stop", () => {
+    slides.play();
+    slides.stop();
+
+    expect(shadowRootQuerySelector.removeChild).toBeCalled();
   });
 });

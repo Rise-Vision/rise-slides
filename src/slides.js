@@ -4,6 +4,7 @@ export default class Slides {
     this.url = url;
     this.width = width + 'px';
     this.height = height + 'px';
+    this.frame = null;
   }
 
   play() {
@@ -11,13 +12,20 @@ export default class Slides {
   }
 
   stop() {
-    // do nothing for now
+    this._unloadFrame();
+  }
+
+  _unloadFrame() {
+    if (this.frame) {
+      this.shadowRoot.querySelector('.slides-component-template').removeChild(this.frame);
+      this.frame = null;
+    }
   }
 
   _loadFrame() {
-    var frame = this._getFrameElement();
+    this.frame = this._getFrameElement();
 
-    this.shadowRoot.querySelector('.slides-component-template').appendChild(frame);
+    this.shadowRoot.querySelector('.slides-component-template').appendChild(this.frame);
   }
 
   _getFrameElement() {

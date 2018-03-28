@@ -59,28 +59,34 @@ export default class RiseSlides extends HTMLElement {
     this.config.setDisplayId(event.detail.displayId);
     this.config.setCompanyId(event.detail.companyId);
     console.log('_handleConfigure', event);
-    if (event.detail && event.detail.displayId !== 'preview') {
+
+    if (event.detail) {
       this.url = event.detail.url;
       this.id = event.detail.componentId;
       this.width = event.detail.width;
       this.height = event.detail.height;
 
-      this.config.setComponentId(this.id);
-      console.log('CONFIGURE - RiseSlides', this.config.componentId);
+      if (event.detail.displayId !== 'preview') {
+        this.config.setComponentId(this.id);
+        console.log('CONFIGURE - RiseSlides', this.config.componentId);
 
-      this.localMessaging = new LocalMessaging();
-      console.log('this.localMessaging connected');
-      this.logger = new Logger(this.config, this.localMessaging);
-      this.eventHandler = new EventHandler(this.logger, this.playlistItem);
-      this._validadeConfiguration();
+        this.localMessaging = new LocalMessaging();
+        console.log('this.localMessaging connected');
+        this.logger = new Logger(this.config, this.localMessaging);
+        this.eventHandler = new EventHandler(this.logger, this.playlistItem);
+        this._validadeConfiguration();
 
-      this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
-      this.eventHandler.emitReady();
-      this.logger.playlistEvent('Configure Event', {configureObject: JSON.stringify(event.detail)});
+        this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
+        this.eventHandler.emitReady();
+        this.logger.playlistEvent('Configure Event', {configureObject: JSON.stringify(event.detail)});
+      } else {
+        this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
+        this.isPreview = true;
+        this.eventHandler.emitReady();
+      }
     } else {
-      this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
-      this.isPreview = true;
-      this.eventHandler.emitReady();
+      this.logger.error('Error: configuration is missing');
+      this.eventHandler.emitDone();
     }
   }
 

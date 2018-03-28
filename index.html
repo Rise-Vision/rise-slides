@@ -10,7 +10,7 @@
 
     <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
     <script type="text/javascript" src="<%=process.env.NODE_ENV !== 'production'
-     ? 'https://storage.googleapis.com/rise-content/stable/components/rise-playlist-item/rise-playlist-item.js'
+     ? 'https://widgets.risevision.com/beta/components/rise-playlist-item/rise-playlist-item.js'
      : '../rise-playlist-item/rise-playlist-item.js' %>"></script>
     <script src="<%= htmlWebpackPlugin.files.chunks['component'].entry %>"></script>
 
@@ -32,6 +32,19 @@
         risePlaylistItem.appendChild(riseSlides);
 
         const eventPlay = new CustomEvent("play");
+        const eventConfigure = new CustomEvent("configure", 
+        {
+          detail: 
+          {
+            displayId: "xxxxxx", 
+            url: "https://docs.google.com/presentation/d/e/2PACX-1vRY1oUY18uGaVzyo6WVlQKSVm1M5NRAMXDnrPUiD9Wn1Hb4FxY8BeL0-qJq6uO-7pDbSg-xVfSQKNys/embed?start=false&loop=false&delayms=3000&slide=id.gd9c453428_0_16", 
+            componentId: "demoComponent",
+            width: "1200",
+            height: "900"
+          }
+        });
+        risePlaylistItem.dispatchEvent(eventConfigure);
+
         setTimeout(()=>{
           risePlaylistItem.dispatchEvent(eventPlay);
         }, 5000)

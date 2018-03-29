@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "common-component": "git+https://github.com/Rise-Vision/common-component.git#v1.10.0",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "url-polyfill": "^1.0.12"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^1.0.20",

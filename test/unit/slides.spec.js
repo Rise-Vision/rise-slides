@@ -1,7 +1,7 @@
 import Slides from "../../src/slides";
 
 let slides = null;
-let testUrl = "testUrl";
+let testUrl = "http://test.com";
 let testWidth = "800";
 let testHeight = "600";
 let shadowRootQuerySelector = null;
@@ -43,7 +43,7 @@ describe("Slides - Unit", () => {
   it("iframe should have correct url", () => {
     const frame = slides._getFrameElement();
 
-    expect(frame.getAttribute("src")).toBe(testUrl);
+    expect(frame.getAttribute("src")).toContain(testUrl);
   });
 
   it("should remove iframe on stop", () => {
@@ -51,5 +51,21 @@ describe("Slides - Unit", () => {
     slides.stop();
 
     expect(shadowRootQuerySelector.removeChild).toBeCalled();
+  });
+
+  describe("URL - Unit", () => {
+    it("should set rm settings", () => {
+      slides._normalizeUrl();
+
+      expect(slides.url.href).toContain("rm=minimal");
+    });
+
+    it("should override rm setting", () => {
+      slides.url = new URL("http://test.com?rm=full");
+      slides._normalizeUrl();
+      
+      expect(slides.url.href).toContain("rm=minimal");
+      expect(slides.url.href).not.toContain("rm=full");
+    });
   });
 });

@@ -57,7 +57,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",
-    "jest": "^21.2.0",
+    "jest": "^22.1.0",
     "local-messaging-module": "git+https://github.com/Rise-Vision/local-messaging-module.git",
     "node-ipc": "^9.1.1",
     "node-notifier": "^5.1.2",

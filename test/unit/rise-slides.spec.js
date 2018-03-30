@@ -62,7 +62,7 @@ describe("Rise Slides - Unit", () => {
 
       const event = new CustomEvent("configure", {
         detail: {
-          url: "test",
+          url: "http://test.com",
           displayId: "xxxxx"
         }
       });
@@ -70,7 +70,7 @@ describe("Rise Slides - Unit", () => {
       risePlaylistItem.dispatchEvent(event);
 
       setTimeout(()=>{
-        expect(component.settings.url).toEqual("test");
+        expect(component.settings.url).toEqual("http://test.com");
         done();
       }, 1000);
 

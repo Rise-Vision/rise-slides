@@ -1,14 +1,17 @@
 import Slides from "../../src/slides";
+import Settings from "../../src/config/settings";
 
 let slides = null;
 let testUrl = "http://test.com";
 let testWidth = "800";
 let testHeight = "600";
+let displayId = "xxxxx";
+let shadowRoot = null;
 let shadowRootQuerySelector = null;
 
 describe("Slides - Unit", () => {
   beforeEach(() => {
-    const shadowRoot = {};
+    shadowRoot = {};
     shadowRootQuerySelector = {};
     shadowRootQuerySelector.appendChild = jest.genMockFn();
     shadowRootQuerySelector.removeChild = jest.genMockFn();
@@ -16,7 +19,16 @@ describe("Slides - Unit", () => {
       return shadowRootQuerySelector;
     })
 
-    slides = new Slides(shadowRoot, testUrl, testWidth, testHeight);
+    const detail = {
+      url: testUrl,
+      width: testWidth,
+      height: testHeight,
+      displayId: displayId
+    }
+
+    let settings = new Settings(detail)
+
+    slides = new Slides(shadowRoot, settings);
   });
 
   it("play should call loadFrame", () => {
@@ -66,6 +78,27 @@ describe("Slides - Unit", () => {
       
       expect(slides.url.href).toContain("rm=minimal");
       expect(slides.url.href).not.toContain("rm=full");
+    });
+
+    it("should loop on displays", () => {      
+      expect(slides.url.href).not.toContain("loop=false");
+      expect(slides.url.href).toContain("loop=true");
+    });
+
+    it("should not loop on preview", () => {
+      const detail = {
+        url: testUrl,
+        width: testWidth,
+        height: testHeight,
+        displayId: "preview"
+      }
+  
+      let settings = new Settings(detail)
+  
+      slides = new Slides(shadowRoot, settings);
+      
+      expect(slides.url.href).toContain("loop=false");
+      expect(slides.url.href).not.toContain("loop=true");
     });
   });
 });

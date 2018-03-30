@@ -100,5 +100,37 @@ describe("Slides - Unit", () => {
       expect(slides.url.href).toContain("loop=false");
       expect(slides.url.href).not.toContain("loop=true");
     });
+
+    it("should use embed url", () => {
+      console.log("here");
+      const detail = {
+        url: "https://docs.google.com/presentation/d/e/xxx/pub?start=false&loop=false&delayms=3000",
+        width: testWidth,
+        height: testHeight,
+        displayId: "preview"
+      }
+
+      let settings = new Settings(detail)
+
+      slides = new Slides(shadowRoot, settings);
+      expect(slides.url.href).toContain("/embed");
+      expect(slides.url.href).not.toContain("/sub");
+    });
+
+    it("should keep embed url", () => {
+      console.log("here");
+      const detail = {
+        url: "https://docs.google.com/presentation/d/e/xxx/embed?start=false&loop=false&delayms=3000",
+        width: testWidth,
+        height: testHeight,
+        displayId: "preview"
+      }
+
+      let settings = new Settings(detail)
+
+      slides = new Slides(shadowRoot, settings);
+      expect(slides.url.href).toContain("/embed");
+      expect(slides.url.href).not.toContain("/sub");
+    });
   });
 });

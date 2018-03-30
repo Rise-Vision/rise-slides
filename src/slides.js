@@ -23,6 +23,7 @@ export default class Slides {
     this.url.searchParams.set('rm', 'minimal');
     this.url.searchParams.set('loop', this.loop.toString());
     this.url.searchParams.set('start', 'true');
+    this.url.pathname = this.url.pathname.replace('/pub', '/embed');
   }
 
   _unloadFrame() {

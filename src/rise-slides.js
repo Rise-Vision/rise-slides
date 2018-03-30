@@ -1,6 +1,7 @@
 import { WebComponent } from 'web-component';
 import {LocalMessaging, Config, Logger, EventHandler} from 'common-component';
 import Slides from './slides';
+import Settings from './config/settings';
 
 @WebComponent('rise-slides', {
   template: require('./rise-slides.html'),
@@ -61,13 +62,10 @@ export default class RiseSlides extends HTMLElement {
     console.log('_handleConfigure', event);
 
     if (event.detail) {
-      this.url = event.detail.url;
-      this.id = event.detail.componentId;
-      this.width = event.detail.width;
-      this.height = event.detail.height;
+      this.settings = new Settings(event.detail);
 
-      if (event.detail.displayId !== 'preview') {
-        this.config.setComponentId(this.id);
+      if (!this.settings.isPreview) {
+        this.config.setComponentId(this.settings.id);
         console.log('CONFIGURE - RiseSlides', this.config.componentId);
 
         this.localMessaging = new LocalMessaging();
@@ -76,12 +74,11 @@ export default class RiseSlides extends HTMLElement {
         this.eventHandler = new EventHandler(this.logger, this.playlistItem);
         this._validadeConfiguration();
 
-        this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
+        this.slides = new Slides(this.shadowRoot, this.settings);
         this.eventHandler.emitReady();
         this.logger.playlistEvent('Configure Event', {configureObject: JSON.stringify(event.detail)});
       } else {
-        this.slides = new Slides(this.shadowRoot, this.url, this.width, this.height);
-        this.isPreview = true;
+        this.slides = new Slides(this.shadowRoot, this.settings);
         this.eventHandler.emitReady();
       }
     } else {
@@ -91,19 +88,19 @@ export default class RiseSlides extends HTMLElement {
   }
 
   _validadeConfiguration() {
-    if (!this.id) {
+    if (!this.settings.id) {
       this.logger.error('Error: componentId is missing');
       this.eventHandler.emitDone();
     }
 
-    if (!this.url) {
+    if (!this.settings.url) {
       this.logger.error('Error: url is missing');
       this.eventHandler.emitDone();
     }
   }
 
   _handlePlay() {
-    if (this.isPreview) {
+    if (this.settings.isPreview) {
       this._playInPreview();
     } else {
       // TODO: authorization & licensing

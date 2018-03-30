@@ -1,11 +1,12 @@
 import 'url-polyfill';
 
 export default class Slides {
-  constructor(shadowRoot, url, width, height) {
+  constructor(shadowRoot, settings) {
     this.shadowRoot = shadowRoot;
-    this.url = new URL(url);
-    this.width = width + 'px';
-    this.height = height + 'px';
+    this.url = new URL(settings.url);
+    this.width = settings.width + 'px';
+    this.height = settings.height + 'px';
+    this.loop = settings.loop;
     this.frame = null;
     this._normalizeUrl();
   }
@@ -20,6 +21,8 @@ export default class Slides {
 
   _normalizeUrl() {
     this.url.searchParams.set('rm', 'minimal');
+    this.url.searchParams.set('loop', this.loop.toString());
+    this.url.searchParams.set('start', 'true');
   }
 
   _unloadFrame() {
@@ -48,7 +51,7 @@ export default class Slides {
 
     frame.setAttribute('width', this.width);
     frame.setAttribute('height', this.height);
-    frame.setAttribute('sandbox', 'allow-forms allow-same-origin allow-scripts');
+    frame.setAttribute('sandbox', 'allow-forms allow-same-origin allow-scripts allow-presentation');
 
     frame.onload = function () {
       this.onload = null;

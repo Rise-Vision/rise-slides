@@ -1,5 +1,6 @@
 import RiseSlides from "../../src/rise-slides";
 import Slides from "../../src/slides";
+import Settings from "../../src/config/settings";
 import {EventHandler} from "common-component";
 
 let component = null;
@@ -40,8 +41,11 @@ describe("Rise Slides - Unit", () => {
     });
 
     beforeEach(() => {
-      // TODO: authorization
-      component.isPreview = false;
+      const detail = {
+        url: "test",
+        displayId: "xxxxx"
+      }
+      component.settings = new Settings(detail);
     });
 
     afterAll(() => {
@@ -58,14 +62,15 @@ describe("Rise Slides - Unit", () => {
 
       const event = new CustomEvent("configure", {
         detail: {
-          url: "test"
+          url: "test",
+          displayId: "xxxxx"
         }
       });
 
       risePlaylistItem.dispatchEvent(event);
 
       setTimeout(()=>{
-        expect(component.url).toEqual("test");
+        expect(component.settings.url).toEqual("test");
         done();
       }, 1000);
 
@@ -74,7 +79,7 @@ describe("Rise Slides - Unit", () => {
 
     it("should call playPreview listener when play event is dispached when in preview", (done) => {
       jest.useFakeTimers();
-      component.isPreview = true;
+      component.settings.isPreview = true;
       const event = new CustomEvent("play");
 
       risePlaylistItem.dispatchEvent(event);
@@ -89,7 +94,7 @@ describe("Rise Slides - Unit", () => {
 
     it("should call play listener when play event is dispached when not in preview", (done) => {
       jest.useFakeTimers();
-      component.isPreview = false;
+      component.settings.isPreview = false;
       const event = new CustomEvent("play");
 
       risePlaylistItem.dispatchEvent(event);
@@ -147,9 +152,17 @@ describe("Rise Slides - Unit", () => {
       component._play = jest.genMockFn();
       component._playInPreview = jest.genMockFn();
     })
+
+    beforeEach(() => {
+      const detail = {
+        url: "test",
+        displayId: "xxxxx"
+      }
+      component.settings = new Settings(detail);
+    });
     
     it("should call _play when not on preview", () => {
-      component.isPreview = false;
+      component.settings.isPreview = false;
 
       component._handlePlay();
 
@@ -158,7 +171,7 @@ describe("Rise Slides - Unit", () => {
     });
 
     it("should call _playInPreview when on preview", () => {
-      component.isPreview = true;
+      component.settings.isPreview = true;
 
       component._handlePlay();
 

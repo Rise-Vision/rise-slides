@@ -21,17 +21,33 @@ export default class RiseSlides extends HTMLElement {
 
   connectedCallback() {
     console.log('RiseSlides', this.shadowRoot);
-    this.playlistItem = this.parentElement;
+    if (this.parentElement && this.parentElement.tagName === 'RISE-PLAYLIST-ITEM') {
+      this.playlistItem = this.parentElement;
+    }
+
     this.config = new Config('rise-slides', 'rise_slides_events', 'rise-slides-failed.log');
     this.eventHandler = new EventHandler(null, this.playlistItem);
     this.licensingAttempts = 0;
 
+    // is standalone
+    if (this.hasAttribute('url')) {
+      this._configureStandalone();
+      this._initializeSlides({configureObject: {url: this.getAttribute('url')}});
+      this._handlePlay();
+    }
+
     this._createListenersForRisePlaylistItemEvents();
+  }
+
+  _configureStandalone() {
+    var url = this.getAttribute('url');
+    // TODO: component id & display id
+    this.settings = new Settings(url, 'componentId', '100%', '100%', 'standalone');
   }
 
   _createListenersForRisePlaylistItemEvents() {
     console.log('_createListenersForRisePlaylistItemEvents', this.playlistItem);
-    if (this.playlistItem && this.playlistItem.tagName === 'RISE-PLAYLIST-ITEM') {
+    if (this.playlistItem) {
       console.log('_createListenersForRisePlaylistItemEvents - addEventListener');
       this.playlistItem.addEventListener('configure', event => {
         this._handleConfigure(event);
@@ -50,9 +66,6 @@ export default class RiseSlides extends HTMLElement {
       });
 
       this.eventHandler.emitReadyForEvents();
-    } else {
-      console.log('rise-playlist-item not found');
-      this.eventHandler.emitDone();
     }
   }
 
@@ -62,28 +75,32 @@ export default class RiseSlides extends HTMLElement {
     console.log('_handleConfigure', event);
 
     if (event.detail) {
-      this.settings = new Settings(event.detail);
+      this.settings = new Settings(event.detail.url, event.detail.componentId,
+        event.detail.width + 'px', event.detail.height + 'px', event.detail.displayId);
 
-      if (!this.settings.isPreview) {
-        this.config.setComponentId(this.settings.id);
-        console.log('CONFIGURE - RiseSlides', this.config.componentId);
-
-        this.localMessaging = new LocalMessaging();
-        console.log('this.localMessaging connected');
-        this.logger = new Logger(this.config, this.localMessaging);
-        this.eventHandler = new EventHandler(this.logger, this.playlistItem);
-        this._validadeConfiguration();
-
-        this.slides = new Slides(this.shadowRoot, this.settings);
-        this.eventHandler.emitReady();
-        this.logger.playlistEvent('Configure Event', {configureObject: JSON.stringify(event.detail)});
-      } else {
-        this.slides = new Slides(this.shadowRoot, this.settings);
-        this.eventHandler.emitReady();
-      }
+      this._initializeSlides({configureObject: JSON.stringify(event.detail)});
     } else {
-      this.logger.error('Error: configuration is missing');
+      console.log('Error: configuration is missing');
       this.eventHandler.emitDone();
+    }
+  }
+
+  _initializeSlides(configureObject) {
+    if (!this.settings.isPreview) {
+      this.config.setComponentId(this.settings.id);
+
+      this.localMessaging = new LocalMessaging();
+      console.log('this.localMessaging connected');
+      this.logger = new Logger(this.config, this.localMessaging);
+      this.eventHandler = new EventHandler(this.logger, this.playlistItem);
+      this._validadeConfiguration();
+
+      this.slides = new Slides(this.shadowRoot, this.settings);
+      this.eventHandler.emitReady();
+      this.logger.playlistEvent('Configure Event', configureObject);
+    } else {
+      this.slides = new Slides(this.shadowRoot, this.settings);
+      this.eventHandler.emitReady();
     }
   }
 
@@ -103,7 +120,6 @@ export default class RiseSlides extends HTMLElement {
     if (this.settings.isPreview) {
       this._playInPreview();
     } else {
-      // TODO: authorization & licensing
       this._play();
     }
   }
@@ -111,8 +127,6 @@ export default class RiseSlides extends HTMLElement {
   _playInPreview() {
     console.log('_play in Preview');
     this.slides.play();
-
-    // TODO: filler slides?
   }
 
   _play() {

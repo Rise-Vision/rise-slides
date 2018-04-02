@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>rise-slides</title>
   </head>
-  <body style="margin: 0px;">
-    <rise-playlist-item></rise-playlist-item>
+  <body style="margin: 0px; overflow: hidden">
+
+    <rise-slides url="https://docs.google.com/presentation/d/e/2PACX-1vTWpMVwZgUbq-GGqU0XnCkms-ungXsn6N2H4_GES_ywffDohRWjCnZ4D3h5rRgfqOoRcB3bmMVD6W1y/pub?start=true&loop=true&delayms=3000">
+    </rise-slides>
 
     <script src="<%= htmlWebpackPlugin.files.chunks['vendor'].entry %>"></script>
     <script type="text/javascript" src="<%=process.env.NODE_ENV !== 'production'
@@ -24,30 +26,6 @@
       document.addEventListener("DOMContentLoaded", function() {
         window.disableViewerContentFetch = true;
         window.RiseVision.Viewer.EntryPoint.init();
-
-        const risePlaylistItem = document.getElementsByTagName("rise-playlist-item")[0];
-        const RiseSlides = customElements.get('rise-slides');
-        const riseSlides = new RiseSlides();
-
-        risePlaylistItem.appendChild(riseSlides);
-
-        const eventPlay = new CustomEvent("play");
-        const eventConfigure = new CustomEvent("configure", 
-        {
-          detail: 
-          {
-            displayId: "xxxxxx", 
-            url: "https://docs.google.com/presentation/d/e/2PACX-1vRY1oUY18uGaVzyo6WVlQKSVm1M5NRAMXDnrPUiD9Wn1Hb4FxY8BeL0-qJq6uO-7pDbSg-xVfSQKNys/pub?start=false&loop=false&delayms=3000", 
-            componentId: "demoComponent",
-            width: "1200",
-            height: "900"
-          }
-        });
-        risePlaylistItem.dispatchEvent(eventConfigure);
-
-        setTimeout(()=>{
-          risePlaylistItem.dispatchEvent(eventPlay);
-        }, 5000)
       });
     </script>
   </body>

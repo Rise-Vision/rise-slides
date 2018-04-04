@@ -4,8 +4,8 @@ export default class Slides {
   constructor(shadowRoot, settings) {
     this.shadowRoot = shadowRoot;
     this.url = new URL(settings.url);
-    this.width = settings.width + 'px';
-    this.height = settings.height + 'px';
+    this.width = settings.width;
+    this.height = settings.height;
     this.loop = settings.loop;
     this.frame = null;
     this._normalizeUrl();
@@ -44,6 +44,7 @@ export default class Slides {
 
     frame.className = 'webpage-frame';
     frame.style.visibility = 'hidden';
+    frame.style.position = 'absolute';
     frame.setAttribute('frameborder', '0');
     frame.setAttribute('allowTransparency', 'true');
     frame.setAttribute('allowfullscreen', 'true');

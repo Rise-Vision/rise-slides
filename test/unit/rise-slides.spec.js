@@ -154,11 +154,11 @@ describe("Rise Slides - Unit", () => {
     })
 
     beforeEach(() => {
-      const detail = {
-        url: "test",
-        displayId: "xxxxx"
-      }
-      component.settings = new Settings(detail);
+
+      const url = "test";
+      const displayId = "xxx";
+
+      component.settings  = new Settings(url, null, '', '', displayId);
     });
     
     it("should call _play when not on preview", () => {
@@ -188,7 +188,6 @@ describe("Rise Slides - Unit", () => {
       component.shadowRoot = {};
       component.shadowRoot.appendChild = jest.genMockFn();
       component.connectedCallback();
-      component.isPreview = false;
       component._pause = jest.genMockFn();
     })
 
@@ -196,6 +195,28 @@ describe("Rise Slides - Unit", () => {
       component._stop();
 
       expect(component._pause).toHaveBeenCalled();
+    });
+  });
+
+  describe("Standalone", () => {
+    beforeAll(() => {
+      risePlaylistItem = document.createElement("rise-playlist-item");
+      document.getElementsByTagName("body")[0].appendChild(risePlaylistItem);
+      component = new RiseSlides();
+      component.shadowRoot = {};
+      component.shadowRoot.appendChild = jest.genMockFn();
+      component._configureStandalone = jest.genMockFn();
+      component._initializeSlides = jest.genMockFn();
+      component._handlePlay = jest.genMockFn();
+      component.setAttribute("url", "http://test.com");
+    })
+
+    it("URL parameter start standalone mode", () => {
+      component.connectedCallback();
+
+      expect(component._configureStandalone).toHaveBeenCalled();
+      expect(component._initializeSlides).toHaveBeenCalled();
+      expect(component._handlePlay).toHaveBeenCalled();
     });
   });
 });

@@ -3,8 +3,8 @@ import Settings from "../../src/config/settings";
 
 let slides = null;
 let testUrl = "http://test.com";
-let testWidth = "800";
-let testHeight = "600";
+let testWidth = "800px";
+let testHeight = "600px";
 let displayId = "xxxxx";
 let shadowRoot = null;
 let shadowRootQuerySelector = null;
@@ -19,14 +19,12 @@ describe("Slides - Unit", () => {
       return shadowRootQuerySelector;
     })
 
-    const detail = {
-      url: testUrl,
-      width: testWidth,
-      height: testHeight,
-      displayId: displayId
-    }
+    const url = testUrl;
+    const width = testWidth;
+    const height = testHeight;
+    const displayId = displayId;
 
-    let settings = new Settings(detail)
+    let settings = new Settings(url, null, width, height, displayId);
 
     slides = new Slides(shadowRoot, settings);
   });
@@ -48,8 +46,8 @@ describe("Slides - Unit", () => {
   it("iframe should have correct width and height", () => {
     const frame = slides._getFrameElement();
 
-    expect(frame.getAttribute("width")).toBe(testWidth + "px");
-    expect(frame.getAttribute("height")).toBe(testHeight + "px");
+    expect(frame.getAttribute("width")).toBe(testWidth);
+    expect(frame.getAttribute("height")).toBe(testHeight);
   });
 
   it("iframe should have correct url", () => {
@@ -86,14 +84,12 @@ describe("Slides - Unit", () => {
     });
 
     it("should not loop on preview", () => {
-      const detail = {
-        url: testUrl,
-        width: testWidth,
-        height: testHeight,
-        displayId: "preview"
-      }
-  
-      let settings = new Settings(detail)
+      const url = testUrl;
+      const width = testWidth;
+      const height = testHeight;
+      const displayId = "preview";
+
+      let settings = new Settings(url, null, width, height, displayId);
   
       slides = new Slides(shadowRoot, settings);
       
@@ -102,15 +98,12 @@ describe("Slides - Unit", () => {
     });
 
     it("should use embed url", () => {
-      console.log("here");
-      const detail = {
-        url: "https://docs.google.com/presentation/d/e/xxx/pub?start=false&loop=false&delayms=3000",
-        width: testWidth,
-        height: testHeight,
-        displayId: "preview"
-      }
+      const url = "https://docs.google.com/presentation/d/e/xxx/pub?start=false&loop=false&delayms=3000";
+      const width = testWidth;
+      const height = testHeight;
+      const displayId = "preview";
 
-      let settings = new Settings(detail)
+      let settings = new Settings(url, null, width, height, displayId);
 
       slides = new Slides(shadowRoot, settings);
       expect(slides.url.href).toContain("/embed");
@@ -118,15 +111,12 @@ describe("Slides - Unit", () => {
     });
 
     it("should keep embed url", () => {
-      console.log("here");
-      const detail = {
-        url: "https://docs.google.com/presentation/d/e/xxx/embed?start=false&loop=false&delayms=3000",
-        width: testWidth,
-        height: testHeight,
-        displayId: "preview"
-      }
+      const url = "https://docs.google.com/presentation/d/e/xxx/embed?start=false&loop=false&delayms=3000";
+      const width = testWidth;
+      const height = testHeight;
+      const displayId = "preview";
 
-      let settings = new Settings(detail)
+      let settings = new Settings(url, null, width, height, displayId);
 
       slides = new Slides(shadowRoot, settings);
       expect(slides.url.href).toContain("/embed");

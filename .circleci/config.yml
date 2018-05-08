@@ -26,6 +26,20 @@ jobs:
       - restore_cache:
           key: node-cache-v2{{ checksum "package.json" }}
       - run:
+          name: get access_token
+          command: |
+            git clone git@github.com:Rise-Vision/private-keys.git
+            client_secret=$(cat private-keys/client-authentication/tokens.txt | grep client_secret)
+            refresh_token=$(cat private-keys/client-authentication/tokens.txt | grep refresh_token)
+            curl -s --data ""  "https://www.googleapis.com/oauth2/v3/token?client_id=614513768474.apps.googleusercontent.com&${client_secret}&${refresh_token}&grant_type=refresh_token" | python -c "import json,sys;obj=json.load(sys.stdin);print obj['access_token'];" > access_token;
+      - run:
+          name: update presentation
+          command: |
+            curl -H 'Authorization:Bearer '$(cat access_token) 'https://rvaserver2.appspot.com/_ah/api/core/v1/presentation?id=d3ede553-5df1-4ef3-be05-e205975cb6db' > content.json
+            cat content.json | jq 'to_entries[] | {data:{layout: .value.layout}}' > patch.json
+            sed -r -i.bak 's%([0-9]{1,4}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})(/rise-slides-widget\.html)%'$(cat version)'\2%' patch.json
+            curl --request PATCH -d @patch.json -H 'Authorization:Bearer '$(cat access_token) 'https://rvaserver2.appspot.com/_ah/api/core/v1/presentation?id=d3ede553-5df1-4ef3-be05-e205975cb6db'
+      - run:
           name: install e2e app
           command: |
             git clone https://github.com/Rise-Vision/rise-launcher-electron-e2e.git
@@ -123,9 +137,6 @@ workflows:
   workflow1:
     jobs:
       - "test"
-      - "e2e":
-          requires:
-            - test
       - "build":
           requires:
             - test
@@ -146,6 +157,9 @@ workflows:
                 - build/stable
                 - /^stage\/.*/
                 - /^staging\/.*/
+      - "e2e":
+          requires:
+            - stage
       - "deploy-stable":
           requires:
             - stage

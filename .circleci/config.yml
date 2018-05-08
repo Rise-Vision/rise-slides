@@ -35,10 +35,11 @@ jobs:
       - run:
           name: update presentation
           command: |
-            curl -H 'Authorization:Bearer '$(cat access_token) 'https://rvaserver2.appspot.com/_ah/api/core/v1/presentation?id=d3ede553-5df1-4ef3-be05-e205975cb6db' > content.json
+            presentation_id='d3ede553-5df1-4ef3-be05-e205975cb6db'
+            curl -H 'Authorization:Bearer '$(cat access_token) "https://rvaserver2.appspot.com/_ah/api/core/v1/presentation?id=${presentation_id}" > content.json
             cat content.json | jq 'to_entries[] | {data:{layout: .value.layout}}' > patch.json
             sed -r -i.bak 's%([0-9]{1,4}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})(/rise-slides-widget\.html)%'$(cat version)'\2%' patch.json
-            curl --request PATCH -d @patch.json -H 'Authorization:Bearer '$(cat access_token) 'https://rvaserver2.appspot.com/_ah/api/core/v1/presentation?id=d3ede553-5df1-4ef3-be05-e205975cb6db'
+            curl --request PATCH -d @patch.json -H 'Authorization:Bearer '$(cat access_token) "https://rvaserver2.appspot.com/_ah/api/core/v1/presentation?id=${presentation_id}"
       - run:
           name: install e2e app
           command: |
@@ -48,11 +49,12 @@ jobs:
       - run: 
           name: run test
           command: | 
+            display_id='S3GERMKMJGX6'
             mkdir ~/rvplayer
-            echo displayid=S3GERMKMJGX6 > ~/rvplayer/RiseDisplayNetworkII.ini
+            echo displayid=${display_id} > ~/rvplayer/RiseDisplayNetworkII.ini
             echo proxy= >> ~/rvplayer/RiseDisplayNetworkII.ini
             cd rise-launcher-electron-e2e
-            node test-display-runner.js S3GERMKMJGX6 "https://storage.googleapis.com/risevision-display-screenshots/S3GERMKMJGX6.jpg" 
+            node test-display-runner.js ${display_id} "https://storage.googleapis.com/risevision-display-screenshots/${display_id}.jpg" 
       - run: 
           name: save screenshot
           command: |

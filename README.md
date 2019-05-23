@@ -1,43 +1,86 @@
-# rise-slides
+# rise-slides [![CircleCI](https://circleci.com/gh/Rise-Vision/rise-slides.svg?style=svg)](https://circleci.com/gh/Rise-Vision/rise-slides)
 
-> Rise Vision Slides Component.
+`rise-slides` is a Polymer 3 Web Component that renders a Google Slides presentation
 
-> The Slides Component is encased in a wrapper component which makes up the widget.
+#### Example
 
-## Build Setup
+```
+  <rise-slides
+    id="presentation"
+    src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
+  </rise-slides>
+```
 
-``` bash
-# install dependencies
+### Labels
+
+The component may define a 'label' attribute that defines the text that will appear for this instance in the template editor.
+
+This attribute holds a literal value, for example:
+
+```
+  <rise-slides
+    id="slides"
+    label="Slides"
+    src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
+  </rise-slides>
+```
+
+If it's not set, the label for the component defaults to "Slides", which is applied via the [generate_blueprint.js](https://github.com/Rise-Vision/html-template-library/blob/master/generate_blueprint.js) file for a HTML Template build/deployment.
+
+### Attributes
+
+This component receives the following list of attributes:
+
+- **id**: ( string ): Unique HTMLElement id.
+- **src**: ( string / required ): Google Slides source. Published URL of my Google Slides or Embed link provided by Google Slides
+- **duration** (number / optional): Duration of a slide in seconds. Default is 10 seconds.
+- **label**: ( string / optional ): An optional label key for the text that will appear in the template editor. See 'Labels' section above.
+- **non-editable**: ( empty / optional ): If present, it indicates this component is not available for customization in the template editor.
+
+### Events
+
+The component sends the following events:
+
+- **_configured_**: The component has initialized what it requires to and is ready to handle a _start_ event.
+
+## Built With
+- [Polymer 3](https://www.polymer-project.org/)
+- [Polymer CLI](https://github.com/Polymer/tools/tree/master/packages/cli)
+- [WebComponents Polyfill](https://www.webcomponents.org/polyfills/)
+- [npm](https://www.npmjs.org)
+
+## Development
+
+### Local Development Build
+Clone this repo and change into this project directory.
+
+Execute the following commands in Terminal:
+
+```
 npm install
-
-# serve with hot reload at localhost:3000
-npm run dev
-
-# build for production with minification
+npm install -g polymer-cli@1.9.7
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-## Test Scripts
+**Note**: If EPERM errors occur then install polymer-cli using the `--unsafe-perm` flag ( `npm install -g polymer-cli --unsafe-perm` ) and/or using sudo.
 
-``` bash
-# run unit tests
-npm run test-unit
+### Testing
+You can run the suite of tests either by command terminal or interactive via Chrome browser.
 
-# run integration tests
-npm run test-integration
+#### Command Terminal
+Execute the following command in Terminal to run tests:
 
-# run all tests
-npm test
+```
+npm run test
 ```
 
-## Run Locally
+#### Local Server
+Run the following command in Terminal: `polymer serve`.
 
-``` bash
-# at localhost:3000
-npm run start
+Now in your browser, navigate to:
+
+```
+http://127.0.0.1:8081/components/rise-slides/demo/src/rise-slides-dev.html
 ```
 
 ## Submitting Issues

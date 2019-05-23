@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>rise-slides test</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+
+    <script type="text/javascript">
+      RisePlayerConfiguration = {
+        isConfigured: () => true
+      };
+    </script>
+
+    <script type="module" src="../src/rise-slides.js"></script>
+  </head>
+  <body>
+
+    <test-fixture id="StaticValueTestFixture">
+      <template>
+          <rise-slides src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
+          </rise-slides>
+      </template>
+    </test-fixture>
+
+    <script type="module">
+      suite('rise-slides', () => {
+
+      });
+    </script>
+
+  </body>
+</html>

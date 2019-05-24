@@ -4,19 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <script src="https://widgets.risevision.com/scripts/primus-local-messaging.js"></script>
-
-  <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-  <script src="../../node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
-  <script type="module">
-    // this and the following block are needed at build time to force the creation of the shared bundle script
-    import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-  </script>
-  <script type="module">
-    import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-  </script>
-  <script src="https://widgets.risevision.com/beta/common/config-test.min.js"></script>
   <script src="https://widgets.risevision.com/beta/common/common-template.min.js"></script>
   <script src="../../src/rise-slides.js" type="module"></script>
   <script>
@@ -29,12 +16,36 @@
       }
     }
   </script>
+  <style type="text/css">
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    rise-slides {
+      width: 531px;
+      height: 300px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <rise-slides src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
-  </rise-slides>
+  <div id="container">
+    <rise-slides
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      duration="1">
+    </rise-slides>
+    <rise-slides
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      duration="5">
+    </rise-slides>
+    <rise-slides
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      duration="10">
+    </rise-slides>
+  </div>
 
   <script>
     function configureComponents() {

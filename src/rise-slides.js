@@ -1,16 +1,22 @@
-import Slides from "./slides";
+import "url-polyfill";
 import {PolymerElement, html} from "@polymer/polymer";
 
 export default class RiseSlides extends PolymerElement {
 
   static get template() {
     return html`
-    <style>
-    :host {
-      display: flex;
-    }
-    </style>
-    <div class="slides-component-template"></div>`;
+      <iframe
+        src="[[url]]"
+        width="100%"
+        height="100%"
+        frameborder="0"
+        allowTransparency="true"
+        allowfullscreen="true"
+        mozallowfullscreen="true"
+        webkitallowfullscreen="true"
+        sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
+      </iframe>
+    `;
   }
 
   static get properties() {
@@ -20,6 +26,10 @@ export default class RiseSlides extends PolymerElement {
       },
       duration: {
         type: Number
+      },
+      url: {
+        type: String,
+        computed: "_computeUrl(src, duration)"
       }
     }
   }
@@ -44,9 +54,19 @@ export default class RiseSlides extends PolymerElement {
   }
 
   _init() {
-    this.slides = new Slides(this.shadowRoot, this.getAttribute("src"), this.getAttribute("duration"));
-    this.slides.play();
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
+  }
+
+  _computeUrl(src, duration) {
+    const url = new URL(src);
+
+    url.searchParams.set("rm", "minimal");
+    url.searchParams.set("loop", "true");
+    url.searchParams.set("start", "true");
+    url.searchParams.set("delayms", duration * 1000);
+    url.pathname = url.pathname.replace("/pub", "/embed");
+
+    return url.href;
   }
 
   _sendEvent(eventName, detail = {}) {

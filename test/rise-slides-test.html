@@ -29,6 +29,13 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="DefaultDurationValueTestFixture">
+      <template>
+        <rise-slides src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/pub">
+        </rise-slides>
+      </template>
+    </test-fixture>
+
     <script type="module">
       suite('rise-slides', () => {
 
@@ -54,6 +61,12 @@
 
           assert.equal(iframe.tagName, "IFRAME");
           assert.equal(iframe.src, element.url);
+        });
+
+        test('should set default 10 seconds duration', () => {
+          const element = fixture('DefaultDurationValueTestFixture');
+
+          assert.equal(element.duration, 10);
         });
 
       });

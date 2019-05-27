@@ -24,13 +24,37 @@
 
     <test-fixture id="StaticValueTestFixture">
       <template>
-          <rise-slides src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
-          </rise-slides>
+        <rise-slides src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/pub" duration="3">
+        </rise-slides>
       </template>
     </test-fixture>
 
     <script type="module">
       suite('rise-slides', () => {
+
+        test('should set embed url with parameters', () => {
+          const element = fixture('StaticValueTestFixture');
+          assert.equal(element.url, 'https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed?rm=minimal&loop=true&start=true&delayms=3000');
+        });
+
+        test('should send "configured" event when "ready" is called', (done) => {
+          const element = fixture('StaticValueTestFixture');
+          element.addEventListener('configured', function (event) {
+            assert.equal(event.type, 'configured');
+            done();
+          });
+
+          //calling "ready" should trigger event
+          element.ready();
+        });
+
+        test('should render iframe with Slides url', () => {
+          const element = fixture('StaticValueTestFixture');
+          const iframe = element.shadowRoot.children[0];
+
+          assert.equal(iframe.tagName, "IFRAME");
+          assert.equal(iframe.src, element.url);
+        });
 
       });
     </script>

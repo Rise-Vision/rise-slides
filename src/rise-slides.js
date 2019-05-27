@@ -25,7 +25,8 @@ export default class RiseSlides extends PolymerElement {
         type: String
       },
       duration: {
-        type: Number
+        type: Number,
+        value: 10
       },
       url: {
         type: String,

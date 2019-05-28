@@ -176,7 +176,7 @@ workflows:
                 - master
                 - /^e2e[/].*/
                 - build/stable
-     - deploy-stage:
+      - deploy-stage:
           requires:
             - gcloud-setup
             - build

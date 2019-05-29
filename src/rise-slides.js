@@ -30,7 +30,7 @@ export default class RiseSlides extends PolymerElement {
       },
       url: {
         type: String,
-        computed: "_computeUrl(src, duration)"
+        computed: "_computeUrl(src, duration, _started)"
       }
     }
   }
@@ -43,10 +43,9 @@ export default class RiseSlides extends PolymerElement {
   static get EVENT_START() {
     return "start";
   }
-  
+
   constructor() {
     super();
-
     this._started = false;
   }
 
@@ -65,9 +64,9 @@ export default class RiseSlides extends PolymerElement {
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
   }
 
-  _computeUrl(src, duration) {
+  _computeUrl(src, duration, _started) {
 
-    if (!this._started || !src) {
+    if (!_started || !src) {
       return undefined;
     }
 
@@ -83,14 +82,7 @@ export default class RiseSlides extends PolymerElement {
   }
 
   _handleStart() {
-
-    let savedSrc = this.src;
-
-    //re-assign "src" in order to trigger "url" re-evaluation
-    this.src = undefined;
     this._started = true;
-    this.src = savedSrc;
-    
   }
 
   _sendEvent(eventName, detail = {}) {

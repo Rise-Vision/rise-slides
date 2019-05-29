@@ -40,8 +40,14 @@ export default class RiseSlides extends PolymerElement {
     return "configured";
   }
 
+  static get EVENT_START() {
+    return "start";
+  }
+  
   constructor() {
     super();
+
+    this._started = false;
   }
 
   ready() {
@@ -55,12 +61,13 @@ export default class RiseSlides extends PolymerElement {
   }
 
   _init() {
+    this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
   }
 
   _computeUrl(src, duration) {
 
-    if (!src) {
+    if (!this._started || !src) {
       return undefined;
     }
 
@@ -75,6 +82,17 @@ export default class RiseSlides extends PolymerElement {
     return url.href;
   }
 
+  _handleStart() {
+
+    let savedSrc = this.src;
+
+    //re-assign "src" in order to trigger "url" re-evaluation
+    this.src = undefined;
+    this._started = true;
+    this.src = savedSrc;
+    
+  }
+
   _sendEvent(eventName, detail = {}) {
     const event = new CustomEvent(eventName, {
       bubbles: true, composed: true, detail
@@ -85,4 +103,3 @@ export default class RiseSlides extends PolymerElement {
 }
 
 customElements.define("rise-slides", RiseSlides);
-

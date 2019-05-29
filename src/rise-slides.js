@@ -67,7 +67,7 @@ export default class RiseSlides extends PolymerElement {
   _computeUrl(src, duration, _started) {
 
     if (!_started || !src) {
-      return undefined;
+      return "";
     }
 
     const url = new URL(src);

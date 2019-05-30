@@ -29,12 +29,36 @@
       }
     }
   </script>
+  <style type="text/css">
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    rise-slides {
+      width: 531px;
+      height: 300px;
+    }
+  </style>
 </head>
 
 <body>
 
-  <rise-slides src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
-  </rise-slides>
+  <div id="container">
+    <rise-slides
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      duration="1">
+    </rise-slides>
+    <rise-slides
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      duration="5">
+    </rise-slides>
+    <rise-slides
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      duration="10">
+    </rise-slides>
+  </div>
 
   <script>
     function configureComponents() {

@@ -62,6 +62,7 @@ export default class RiseSlides extends PolymerElement {
   _init() {
     this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
+    setInterval(() => this._refresh(), 10000);
   }
 
   _computeUrl(src, duration, _started) {
@@ -91,6 +92,26 @@ export default class RiseSlides extends PolymerElement {
     });
 
     this.dispatchEvent(event);
+  }
+
+  _refresh() {
+    const revisionRegex = /revision:[^,]+/;
+
+    fetch(this.url)
+      .then(response => response.text())
+      .then(text => text.match(revisionRegex))
+      .then(data => data[0])
+      .then(revision => {
+        if (!this._revision) {
+          this._revision = revision;
+          return;
+        }
+
+        if (this._revision !== revision) {
+          this._revision = revision;
+          this.shadowRoot.firstElementChild.src = this.shadowRoot.firstElementChild.src;
+        }
+      });
   }
 }
 

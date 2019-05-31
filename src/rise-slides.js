@@ -1,7 +1,8 @@
 import "url-polyfill";
 import {PolymerElement, html} from "@polymer/polymer";
+import {LoggerMixin} from "./logger-mixin";
 
-export default class RiseSlides extends PolymerElement {
+export default class RiseSlides extends LoggerMixin(PolymerElement) {
 
   static get template() {
     return html`
@@ -14,6 +15,8 @@ export default class RiseSlides extends PolymerElement {
         allowfullscreen="true"
         mozallowfullscreen="true"
         webkitallowfullscreen="true"
+        on-load="_onIframeLoad"
+        on-error="_onIframeError"
         sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
       </iframe>
     `;
@@ -91,6 +94,16 @@ export default class RiseSlides extends PolymerElement {
     });
 
     this.dispatchEvent(event);
+  }
+
+  _onIframeLoad() {
+    // eslint-disable-next-line no-console
+    console.log("onload");
+  }
+
+  _onIframeError() {
+    // eslint-disable-next-line no-console
+    console.log("onerror");
   }
 }
 

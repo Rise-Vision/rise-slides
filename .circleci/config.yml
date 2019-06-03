@@ -41,6 +41,11 @@ jobs:
           at: .
       - restore_cache:
           key: node-cache-{{ checksum "package.json" }}
+      - run: |
+          VERSION=$(cat version-string/version)
+          sed -i "
+            s/__VERSION__/$VERSION/;
+          " src/rise-slides-version.js
       - run: npm run build
       - persist_to_workspace:
           root: .

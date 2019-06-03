@@ -63,12 +63,12 @@
           element.ready();
         });
 
-        test('should render iframe with Slides url', () => {
+        test('should render object with Slides url', () => {
           const element = fixture('StaticValueTestFixture');
           const iframe = element.shadowRoot.children[0];
 
-          assert.equal(iframe.tagName, "IFRAME");
-          assert.equal(iframe.src, element.url);
+          assert.equal(iframe.tagName, "OBJECT");
+          assert.equal(iframe.data, element.url);
         });
 
         test('should set default 10 seconds duration', () => {

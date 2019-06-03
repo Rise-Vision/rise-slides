@@ -6,8 +6,8 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
 
   static get template() {
     return html`
-      <iframe
-        src="[[url]]"
+      <object
+        data="[[url]]"
         width="100%"
         height="100%"
         frameborder="0"
@@ -16,9 +16,8 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
         mozallowfullscreen="true"
         webkitallowfullscreen="true"
         on-load="_onIframeLoad"
-        on-error="_onIframeError"
         sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
-      </iframe>
+      </object>
     `;
   }
 
@@ -52,19 +51,24 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     this._started = false;
   }
 
+  get iframe() {
+    return this.shadowRoot.firstElementChild;
+  }
+
   ready() {
     super.ready();
 
     if (RisePlayerConfiguration.isConfigured()) {
       this._init();
     } else {
-      window.addEventListener( "rise-components-ready", () => this._init(), { once: true });
+      window.addEventListener( "rise-components-ready", () => this._init(), {once: true});
     }
   }
 
   _init() {
     this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
+    this._loadTimer = setTimeout(() => this.log("error", "loading slides timeout"), 10000);
   }
 
   _computeUrl(src, duration, _started) {
@@ -97,13 +101,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   }
 
   _onIframeLoad() {
-    // eslint-disable-next-line no-console
-    console.log("onload");
-  }
-
-  _onIframeError() {
-    // eslint-disable-next-line no-console
-    console.log("onerror");
+    clearTimeout(this._loadTimer);
   }
 }
 

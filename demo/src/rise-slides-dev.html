@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://widgets.risevision.com/beta/common/config-test.min.js"></script>
   <script src="https://widgets.risevision.com/beta/common/common-template.min.js"></script>
   <script src="../../src/rise-slides.js" type="module"></script>
   <script>
@@ -34,14 +35,17 @@
 
   <div id="container">
     <rise-slides
+      id="first"
       src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
       duration="1">
     </rise-slides>
     <rise-slides
-      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
+      id="second"
+      src="https://docs.google.com/presentation/d/e/2PACX-d-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
       duration="5">
     </rise-slides>
     <rise-slides
+      id="third"
       src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed"
       duration="10">
     </rise-slides>
@@ -61,6 +65,8 @@
         console.log( "no connection to local messaging");
       }
     } );
+
+    Array.from(document.getElementsByTagName('rise-slides')).forEach(slidesElement => RisePlayerConfiguration.Helpers.sendStartEvent(slidesElement));
   </script>
   <script>
     RisePlayerConfiguration.configure();

@@ -50,6 +50,8 @@
         console.log( "no connection to local messaging");
       }
     } );
+
+    Array.from(document.getElementsByTagName('rise-slides')).forEach(slidesElement => RisePlayerConfiguration.Helpers.sendStartEvent(slidesElement));
   </script>
   <script>
     RisePlayerConfiguration.configure();

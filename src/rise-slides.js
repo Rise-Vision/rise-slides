@@ -1,12 +1,13 @@
 import "url-polyfill";
 import {PolymerElement, html} from "@polymer/polymer";
+import {LoggerMixin} from "./logger-mixin";
 
-export default class RiseSlides extends PolymerElement {
+export default class RiseSlides extends LoggerMixin(PolymerElement) {
 
   static get template() {
     return html`
-      <iframe
-        src="[[url]]"
+      <object
+        data="[[url]]"
         width="100%"
         height="100%"
         frameborder="0"
@@ -14,8 +15,9 @@ export default class RiseSlides extends PolymerElement {
         allowfullscreen="true"
         mozallowfullscreen="true"
         webkitallowfullscreen="true"
+        on-load="_onIframeLoad"
         sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
-      </iframe>
+      </object>
     `;
   }
 
@@ -55,13 +57,14 @@ export default class RiseSlides extends PolymerElement {
     if (RisePlayerConfiguration.isConfigured()) {
       this._init();
     } else {
-      window.addEventListener( "rise-components-ready", () => this._init(), { once: true });
+      window.addEventListener( "rise-components-ready", () => this._init(), {once: true});
     }
   }
 
   _init() {
     this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
+    this._loadTimer = setTimeout(() => this._logLoadingError(), 10000);
   }
 
   _computeUrl(src, duration, _started) {
@@ -91,6 +94,16 @@ export default class RiseSlides extends PolymerElement {
     });
 
     this.dispatchEvent(event);
+  }
+
+  _onIframeLoad() {
+    clearTimeout(this._loadTimer);
+  }
+
+  _logLoadingError() {
+    if (!RisePlayerConfiguration.isPreview()) {
+      this.log("error", "loading slides timeout")
+    }
   }
 }
 

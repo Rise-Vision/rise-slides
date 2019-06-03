@@ -51,10 +51,6 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     this._started = false;
   }
 
-  get iframe() {
-    return this.shadowRoot.firstElementChild;
-  }
-
   ready() {
     super.ready();
 

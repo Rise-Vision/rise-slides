@@ -64,7 +64,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   _init() {
     this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
-    this._loadTimer = setTimeout(() => this.log("error", "loading slides timeout"), 10000);
+    this._loadTimer = setTimeout(() => this._logLoadingError(), 10000);
   }
 
   _computeUrl(src, duration, _started) {
@@ -98,6 +98,12 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
 
   _onIframeLoad() {
     clearTimeout(this._loadTimer);
+  }
+
+  _logLoadingError() {
+    if (!RisePlayerConfiguration.isPreview()) {
+      this.log("error", "loading slides timeout")
+    }
   }
 }
 

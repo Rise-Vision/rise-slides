@@ -87,6 +87,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     url.searchParams.set("loop", "true");
     url.searchParams.set("start", "true");
     url.searchParams.set("delayms", duration * 1000);
+    url.searchParams.set("ts", new Date().getTime());
     url.pathname = url.pathname.replace("/pub", "/embed");
 
     return url.href;

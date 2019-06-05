@@ -14,7 +14,8 @@
 
     <script type="text/javascript">
       RisePlayerConfiguration = {
-        isConfigured: () => true
+        isConfigured: () => true,
+        isPreview: () => true
       };
     </script>
 
@@ -65,10 +66,10 @@
 
         test('should render object with Slides url', () => {
           const element = fixture('StaticValueTestFixture');
-          const iframe = element.shadowRoot.children[0];
+          const object = element.shadowRoot.children[0];
 
-          assert.equal(iframe.tagName, "OBJECT");
-          assert.equal(iframe.data, element.url);
+          assert.equal(object.tagName, "OBJECT");
+          assert.equal(object.data, element.url);
         });
 
         test('should set default 10 seconds duration', () => {

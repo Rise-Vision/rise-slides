@@ -15,7 +15,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
         allowfullscreen="true"
         mozallowfullscreen="true"
         webkitallowfullscreen="true"
-        on-load="_onIframeLoad"
+        on-load="_onObjectLoad"
         sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
       </object>
     `;
@@ -96,7 +96,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     this.dispatchEvent(event);
   }
 
-  _onIframeLoad() {
+  _onObjectLoad() {
     clearTimeout(this._loadTimer);
   }
 

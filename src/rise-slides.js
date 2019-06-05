@@ -61,6 +61,14 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     }
   }
 
+  _shouldPropertyChange(property, value, old) {
+    if (property === "src") {
+      return true;
+    }
+
+    return super._shouldPropertyChange(property, value, old);
+  }
+
   _init() {
     this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);

@@ -14,7 +14,8 @@
 
     <script type="text/javascript">
       RisePlayerConfiguration = {
-        isConfigured: () => true
+        isConfigured: () => true,
+        isPreview: () => true
       };
     </script>
 
@@ -65,10 +66,36 @@
 
         test('should render object with Slides url', () => {
           const element = fixture('StaticValueTestFixture');
-          const iframe = element.shadowRoot.children[0];
+          const object = element.shadowRoot.children[0];
 
-          assert.equal(iframe.tagName, "OBJECT");
-          assert.equal(iframe.data, element.url);
+          assert.equal(object.tagName, "OBJECT");
+          assert.equal(object.data, element.url);
+        });
+
+        test('should reload object url when src is set to a new URL', () => {
+          const element = fixture('StaticValueTestFixture');
+          const object = element.shadowRoot.children[0];
+
+          element._handleStart();
+
+          let computedNewUrl = false;
+          element._computeUrl = () => computedNewUrl = true;
+
+          element.src = "https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/pub?new=true";
+          assert.equal(true, computedNewUrl);
+        });
+
+        test('should reload object url when src is set to the same URL', () => {
+          const element = fixture('StaticValueTestFixture');
+          const object = element.shadowRoot.children[0];
+
+          element._handleStart();
+
+          let computedNewUrl = false;
+          element._computeUrl = () => computedNewUrl = true;
+
+          element.src = element.src;
+          assert.equal(true, computedNewUrl);
         });
 
         test('should set default 10 seconds duration', () => {

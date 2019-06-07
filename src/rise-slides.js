@@ -78,7 +78,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   _computeUrl(src, duration, _started) {
 
     if (!_started || !src) {
-      return "";
+      return "about:blank";
     }
 
     const url = new URL(src);

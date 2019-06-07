@@ -95,6 +95,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   }
 
   _urlChanged() {
+    clearTimeout(this._loadTimer);
     this._loadTimer = setTimeout(() => this._logLoadingErrorAndRetry(), this._loadTimerMillis);
   }
 
@@ -119,7 +120,10 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     if (!RisePlayerConfiguration.isPreview()) {
       this.log("error", "loading slides timeout", this.url);
     }
-    this._loadTimerMillis = this._loadTimerMillis * 2;
+
+    const oneHour = 1000 * 60 * 60;
+
+    this._loadTimerMillis = Math.min(this._loadTimerMillis * 2, oneHour);
     this.src = this.src; // Trigger _computeUrl and retry loading
   }
 }

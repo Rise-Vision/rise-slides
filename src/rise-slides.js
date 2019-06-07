@@ -32,7 +32,8 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
       },
       url: {
         type: String,
-        computed: "_computeUrl(src, duration, _started)"
+        computed: "_computeUrl(src, duration, _started)",
+        observer: "_urlChanged"
       }
     }
   }
@@ -49,6 +50,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   constructor() {
     super();
     this._started = false;
+    this._loadTimerMillis = 10000;
   }
 
   ready() {
@@ -72,7 +74,6 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   _init() {
     this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
     this._sendEvent(RiseSlides.EVENT_CONFIGURED);
-    this._loadTimer = setTimeout(() => this._logLoadingError(), 10000);
   }
 
   _computeUrl(src, duration, _started) {
@@ -93,6 +94,11 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     return url.href;
   }
 
+  _urlChanged() {
+    clearTimeout(this._loadTimer);
+    this._loadTimer = setTimeout(() => this._logLoadingErrorAndRetry(), this._loadTimerMillis);
+  }
+
   _handleStart() {
     this._started = true;
   }
@@ -107,12 +113,18 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
 
   _onObjectLoad() {
     clearTimeout(this._loadTimer);
+    this._loadTimerMillis = 10000;
   }
 
-  _logLoadingError() {
+  _logLoadingErrorAndRetry() {
     if (!RisePlayerConfiguration.isPreview()) {
-      this.log("error", "loading slides timeout")
+      this.log("error", "loading slides timeout", this.url);
     }
+
+    const oneHour = 1000 * 60 * 60;
+
+    this._loadTimerMillis = Math.min(this._loadTimerMillis * 2, oneHour);
+    this.src = this.src; // Trigger _computeUrl and retry loading
   }
 }
 

@@ -1,8 +1,8 @@
 import "url-polyfill";
-import {PolymerElement, html} from "@polymer/polymer";
-import {LoggerMixin} from "./logger-mixin";
+import { html } from "@polymer/polymer";
+import { RiseElement } from "rise-common-component/src/rise-element.js";
 
-export default class RiseSlides extends LoggerMixin(PolymerElement) {
+export default class RiseSlides extends RiseElement {
 
   static get template() {
     return html`
@@ -38,29 +38,10 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     }
   }
 
-  // Event name constants
-  static get EVENT_CONFIGURED() {
-    return "configured";
-  }
-
-  static get EVENT_START() {
-    return "start";
-  }
-
   constructor() {
     super();
     this._started = false;
     this._loadTimerMillis = 10000;
-  }
-
-  ready() {
-    super.ready();
-
-    if (RisePlayerConfiguration.isConfigured()) {
-      this._init();
-    } else {
-      window.addEventListener( "rise-components-ready", () => this._init(), {once: true});
-    }
   }
 
   _shouldPropertyChange(property, value, old) {
@@ -69,11 +50,6 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
     }
 
     return super._shouldPropertyChange(property, value, old);
-  }
-
-  _init() {
-    this.addEventListener(RiseSlides.EVENT_START, this._handleStart, {once: true});
-    this._sendEvent(RiseSlides.EVENT_CONFIGURED);
   }
 
   _computeUrl(src, duration, _started) {
@@ -100,15 +76,9 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
   }
 
   _handleStart() {
+    super._handleStart();
+
     this._started = true;
-  }
-
-  _sendEvent(eventName, detail = {}) {
-    const event = new CustomEvent(eventName, {
-      bubbles: true, composed: true, detail
-    });
-
-    this.dispatchEvent(event);
   }
 
   _onObjectLoad() {
@@ -118,7 +88,7 @@ export default class RiseSlides extends LoggerMixin(PolymerElement) {
 
   _logLoadingErrorAndRetry() {
     if (!RisePlayerConfiguration.isPreview()) {
-      this.log("error", "loading slides timeout", this.url);
+      super.log("error", "loading slides timeout", this.url);
     }
 
     const oneHour = 1000 * 60 * 60;

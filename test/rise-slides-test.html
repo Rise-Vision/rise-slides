@@ -16,7 +16,7 @@
     <script type="text/javascript">
       RisePlayerConfiguration = {
         isConfigured: () => true,
-        isPreview: () => true,
+        isPreview: sinon.stub().returns(true),
         Logger: {}
       };
     </script>
@@ -151,6 +151,41 @@
           element.dispatchEvent(new Event('start'));
 
           assert.equal(element._started, true);
+        });
+
+        suite('uptime', () => {
+          let element;
+
+          setup(() => {
+            element = fixture('StaticValueTestFixture');
+
+            sinon.stub(element.__proto__.__proto__, '_setUptimeError');
+          });
+
+          teardown(() => {
+            RisePlayerConfiguration.isPreview.returns(true);
+            sinon.restore();
+          });
+
+          test('should reset uptime failure on object load', () => {
+            element._onObjectLoad();
+
+            assert.isTrue(element._setUptimeError.calledWith(false));
+          });
+
+          test('should log uptime failure on object load error', () => {
+            RisePlayerConfiguration.isPreview.returns(false);
+
+            element._logLoadingErrorAndRetry();
+
+            assert.isTrue(element._setUptimeError.calledWith(true));
+          });
+
+          test('should not log failure in preview', () => {
+            element._logLoadingErrorAndRetry();
+
+            assert.isFalse(element._setUptimeError.called);
+          });
         });
 
       });

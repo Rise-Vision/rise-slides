@@ -83,11 +83,13 @@ export default class RiseSlides extends RiseElement {
 
   _onObjectLoad() {
     clearTimeout(this._loadTimer);
+    super._setUptimeError(false);
     this._loadTimerMillis = 10000;
   }
 
   _logLoadingErrorAndRetry() {
     if (!RisePlayerConfiguration.isPreview()) {
+      super._setUptimeError(true);
       super.log("error", "loading slides timeout", this.url);
     }
 

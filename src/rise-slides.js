@@ -1,6 +1,7 @@
 import "url-polyfill";
 import { html } from "@polymer/polymer";
 import { RiseElement } from "rise-common-component/src/rise-element.js";
+import { version } from "./rise-slides-version.js";
 
 export default class RiseSlides extends RiseElement {
 
@@ -40,6 +41,9 @@ export default class RiseSlides extends RiseElement {
 
   constructor() {
     super();
+
+    this._setVersion( version );
+
     this._started = false;
     this._loadTimerMillis = 10000;
   }

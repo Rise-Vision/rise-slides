@@ -113,12 +113,12 @@ jobs:
           key: node-cache-{{ checksum "package.json" }}
       - run: mkdir -p ~/.config
       - run: cp -r gcloud ~/.config
-      - run: npm install common-component
+      - run: npm install rise-common-component
       - run: |
           VERSION=$(cat version-string/version)
           TARGET=$WIDGETS_BASE/staging/components/rise-slides/$VERSION/
           echo Deploying version $VERSION to rise-slides
-          node_modules/common-component/deploy-gcs.sh rise-slides $TARGET
+          node_modules/rise-common-component/scripts/deploy-gcs.sh rise-slides $TARGET
 
   deploy-e2e-page:
     parameters:
@@ -200,12 +200,12 @@ jobs:
           key: node-cache-{{ checksum "package.json" }}
       - run: mkdir -p ~/.config
       - run: cp -r gcloud ~/.config
-      - run: npm install common-component
+      - run: npm install rise-common-component
       - run: |
           MAJOR=$(grep version package.json | grep -Po '[0-9]+' | head -1)
           TARGET=$WIDGETS_BASE/<< parameters.stage >>/components/rise-slides/$MAJOR/
           echo Deploying << parameters.stage >> version of rise-slides/$MAJOR
-          node_modules/common-component/deploy-gcs.sh rise-slides $TARGET
+          node_modules/rise-common-component/scripts/deploy-gcs.sh rise-slides $TARGET
 
 workflows:
   workflow1:

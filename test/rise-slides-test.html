@@ -47,15 +47,17 @@
 
     <script type="module">
       suite('rise-slides', () => {
+        const sandbox = sinon.createSandbox();
 
         setup(()=>{
-          RisePlayerConfiguration.Logger.info = sinon.spy();
-          RisePlayerConfiguration.Logger.warning = sinon.spy();
-          RisePlayerConfiguration.Logger.error = sinon.spy();
+          RisePlayerConfiguration.Logger.info = sandbox.spy();
+          RisePlayerConfiguration.Logger.warning = sandbox.spy();
+          RisePlayerConfiguration.Logger.error = sandbox.spy();
         });
 
         teardown(()=>{
           RisePlayerConfiguration.Logger = {};
+          sandbox.restore();
         });
 
         test('should set embed url with parameters', () => {
@@ -151,6 +153,16 @@
           element.dispatchEvent(new Event('start'));
 
           assert.equal(element._started, true);
+        });
+
+        test('should refresh on rise-presentation-play event', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          sandbox.stub(element, '_refresh');
+
+          element.dispatchEvent(new Event('rise-presentation-play'));
+
+          assert.equal(element._refresh.called, true);
         });
 
         suite('uptime', () => {

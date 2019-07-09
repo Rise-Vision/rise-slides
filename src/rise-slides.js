@@ -48,6 +48,12 @@ export default class RiseSlides extends RiseElement {
     this._loadTimerMillis = 10000;
   }
 
+  ready() {
+    super.ready();
+
+    this.addEventListener( "rise-presentation-play", () => this._refresh());
+  }
+
   _shouldPropertyChange(property, value, old) {
     if (property === "src") {
       return true;
@@ -100,7 +106,11 @@ export default class RiseSlides extends RiseElement {
     const oneHour = 1000 * 60 * 60;
 
     this._loadTimerMillis = Math.min(this._loadTimerMillis * 2, oneHour);
-    this.src = this.src; // Trigger _computeUrl and retry loading
+    this._refresh();
+  }
+
+  _refresh() {
+    this.src = this.src; // Trigger _computeUrl and force loading
   }
 }
 

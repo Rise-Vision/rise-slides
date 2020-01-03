@@ -1,4 +1,4 @@
-# rise-slides [![CircleCI](https://circleci.com/gh/Rise-Vision/rise-slides.svg?style=svg)](https://circleci.com/gh/Rise-Vision/rise-slides)
+# rise-slides [![CircleCI](https://circleci.com/gh/Rise-Vision/rise-slides.svg?style=svg)](https://circleci.com/gh/Rise-Vision/rise-slides) [![Coverage Status](https://coveralls.io/repos/github/Rise-Vision/rise-slides/badge.svg?branch=master)](https://coveralls.io/github/Rise-Vision/rise-slides?branch=master)
 
 `rise-slides` is a Polymer 3 Web Component that renders a Google Slides presentation
 
@@ -31,7 +31,7 @@ If it's not set, the label for the component defaults to "Slides", which is appl
 
 This component receives the following list of attributes:
 
-- **id**: ( string ): Unique HTMLElement id.
+- **id**: ( string / required ): Unique HTMLElement id.
 - **src**: ( string / required ): Google Slides source. Published URL of my Google Slides or Embed link provided by Google Slides
 - **duration** (number / optional): Duration of a slide in seconds. Default is 10 seconds.
 - **label**: ( string / optional ): An optional label key for the text that will appear in the template editor. See 'Labels' section above.
@@ -72,6 +72,12 @@ Execute the following command in Terminal to run tests:
 
 ```
 npm run test
+```
+
+In case `polymer-cli` was installed globally, the `wct-istanbul` package will also need to be installed globally:
+
+```
+npm install -g wct-istanbul
 ```
 
 #### Local Server

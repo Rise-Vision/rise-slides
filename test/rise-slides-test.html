@@ -172,6 +172,7 @@
             element = fixture('StaticValueTestFixture');
 
             sinon.stub(element.__proto__.__proto__, '_setUptimeError');
+            sinon.stub(element.__proto__.__proto__, 'log');
           });
 
           teardown(() => {
@@ -185,12 +186,23 @@
             assert.isTrue(element._setUptimeError.calledWith(false));
           });
 
-          test('should log uptime failure on object load error', () => {
+          test('should log warniing for uptime failure on object load error', () => {
             RisePlayerConfiguration.isPreview.returns(false);
 
             element._logLoadingErrorAndRetry();
 
             assert.isTrue(element._setUptimeError.calledWith(true));
+            assert.isTrue(element.log.calledWith("warning"));
+          });
+
+          test('should log error for uptime failure on object load error', () => {
+            RisePlayerConfiguration.isPreview.returns(false);
+            element._loadTimerMillis = element._loadTimerMillis * 3; // simulate 3 attempts
+
+            element._logLoadingErrorAndRetry();
+
+            assert.isTrue(element._setUptimeError.calledWith(true));
+            assert.isTrue(element.log.calledWith("error"));
           });
 
           test('should not log failure in preview', () => {

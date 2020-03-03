@@ -89,6 +89,37 @@ Now in your browser, navigate to:
 http://127.0.0.1:8081/components/rise-slides/demo/src/rise-slides-dev.html
 ```
 
+### Demo project
+
+A demo project showing how to implement a simple slides component can be found in the `demo` folder.
+
+Another option is using `example-slides-component` as the scaffolding for a new template. This project can be found in https://github.com/Rise-Vision/html-template-library
+
+### Integration in a Template
+
+After creating the Template's structure in `html-template-library`, add a reference to the component in the `<head>` section of `template.html`:
+
+```
+<script src="https://widgets.risevision.com/stable/components/rise-slides/1/rise-slides.js"></script>
+```
+
+Add an instance of the component, as shown in the example:
+
+```
+  <rise-slides
+      id="rise-slides-01" label="Slides" duration="3"
+      src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed">
+  </rise-slides>
+```
+
+To test the template in a browser outside Player/Apps, add the following lines (replacing with the appropriate element id):
+
+```
+const riseSlides01 = document.querySelector('#rise-slides-01');
+
+RisePlayerConfiguration.Helpers.sendStartEvent( riseSlides01 );
+```
+
 ## Submitting Issues
 If you encounter problems or find defects we really want to hear about them. If you could take the time to add them as issues to this Repository it would be most appreciated. When reporting issues, please use the following format where applicable:
 

@@ -177,6 +177,12 @@
           assert.equal(element._playing, false);
         });
 
+        test('should handle errors', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          element._onObjectError();
+        });
+
         suite('uptime', () => {
           let element;
 

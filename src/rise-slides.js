@@ -17,6 +17,7 @@ export default class RiseSlides extends RiseElement {
         mozallowfullscreen="true"
         webkitallowfullscreen="true"
         on-load="_onObjectLoad"
+        on-error="_onObjectError"
         sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
       </object>
     `;
@@ -98,9 +99,15 @@ export default class RiseSlides extends RiseElement {
   }
 
   _onObjectLoad() {
+    console.log("on object load"); // eslint-disable-line no-console
+
     clearTimeout(this._loadTimer);
     super._setUptimeError(false);
     this._loadTimerMillis = 10000;
+  }
+
+  _onObjectError(error) {
+    console.log(`on object error: ${JSON.stringify(error)}`); // eslint-disable-line no-console
   }
 
   _logLoadingErrorAndRetry() {

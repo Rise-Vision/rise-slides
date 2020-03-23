@@ -62,6 +62,7 @@
 
         test('should set embed url with parameters', () => {
           const element = fixture('StaticValueTestFixture');
+          element._playing = true;
           element._handleStart();
 
           const url = new URL(element.url);
@@ -97,6 +98,7 @@
           const element = fixture('StaticValueTestFixture');
           const object = element.shadowRoot.children[0];
 
+          element._playing = true;
           element._handleStart();
 
           let computedNewUrl = false;
@@ -110,6 +112,7 @@
           const element = fixture('StaticValueTestFixture');
           const object = element.shadowRoot.children[0];
 
+          element._playing = true;
           element._handleStart();
 
           let computedNewUrl = false;
@@ -123,6 +126,7 @@
           const element = fixture('StaticValueTestFixture');
           const object = element.shadowRoot.children[0];
 
+          element._playing = true;
           element._handleStart();
 
           element.src = "";
@@ -131,6 +135,8 @@
 
         test('should set default 10 seconds duration', () => {
           const element = fixture('DefaultDurationValueTestFixture');
+
+          element._playing = true;
           element._handleStart();
 
           assert.equal(element.duration, 10);
@@ -155,14 +161,20 @@
           assert.equal(element._started, true);
         });
 
-        test('should refresh on rise-presentation-play event', () => {
+        test('should set playing flag on rise-presentation-play event', () => {
           const element = fixture('StaticValueTestFixture');
-
-          sandbox.stub(element, '_refresh');
 
           element.dispatchEvent(new Event('rise-presentation-play'));
 
-          assert.equal(element._refresh.called, true);
+          assert.equal(element._playing, true);
+        });
+
+        test('should reset playing flag on rise-presentation-stop event', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          element.dispatchEvent(new Event('rise-presentation-stop'));
+
+          assert.equal(element._playing, false);
         });
 
         suite('uptime', () => {

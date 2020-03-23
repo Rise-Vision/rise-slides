@@ -33,7 +33,7 @@ export default class RiseSlides extends RiseElement {
       },
       url: {
         type: String,
-        computed: "_computeUrl(src, duration, _started)",
+        computed: "_computeUrl(src, duration, _started, _playing)",
         observer: "_urlChanged"
       }
     }
@@ -45,13 +45,19 @@ export default class RiseSlides extends RiseElement {
     this._setVersion( version );
 
     this._started = false;
+    this._playing = false;
     this._loadTimerMillis = 10000;
   }
 
   ready() {
     super.ready();
 
-    this.addEventListener( "rise-presentation-play", () => this._refresh());
+    this.addEventListener( "rise-presentation-play", () => {
+      this._playing = true;
+    });
+    this.addEventListener( "rise-presentation-stop", () => {
+      this._playing = false;
+    });
   }
 
   _shouldPropertyChange(property, value, old) {
@@ -62,9 +68,9 @@ export default class RiseSlides extends RiseElement {
     return super._shouldPropertyChange(property, value, old);
   }
 
-  _computeUrl(src, duration, _started) {
+  _computeUrl(src, duration, _started, _playing) {
 
-    if (!_started || !src) {
+    if (!_started || !_playing || !src) {
       return "about:blank";
     }
 

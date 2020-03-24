@@ -156,22 +156,30 @@
           assert.equal(element._started, true);
         });
 
-        suite('_refresh', () => {
-          test('should refresh on rise-presentation-play event', () => {
-            const element = fixture('StaticValueTestFixture');
+        test('should refresh when URL is changed', () => {
+          const element = fixture('EmptySrcTestFixture');
 
-            sandbox.stub(element, '_refresh');
+          sandbox.stub(element, '_refresh');
 
-            element.dispatchEvent(new Event('rise-presentation-play'));
+          element._urlChanged();
 
-            assert.equal(element._refresh.called, true);
-          });
+          assert.equal(element._refresh.called, true);
+        });
 
-          test('should refresh', () => {
-            const element = fixture('StaticValueTestFixture');
+        test('should refresh on rise-presentation-play event', () => {
+          const element = fixture('StaticValueTestFixture');
 
-            element._refresh();
-          });
+          sandbox.stub(element, '_refresh');
+
+          element.dispatchEvent(new Event('rise-presentation-play'));
+
+          assert.equal(element._refresh.called, true);
+        });
+
+        test('should refresh', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          element._refresh();
         });
 
         suite('uptime', () => {

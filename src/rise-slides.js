@@ -103,14 +103,9 @@ export default class RiseSlides extends RiseElement {
   }
 
   _refresh() {
-    if (!this.shadowRoot) {
-      console.log("no shadow root"); // eslint-disable-line no-console
-      return;
-    }
-
-    console.log(`appending: ${this.url}`); // eslint-disable-line no-console
-
     this.shadowRoot.textContent = "";
+
+    // object tag is dynamically created each time to prevent network error issue - https://github.com/Rise-Vision/html-template-library/issues/1043
     const tag = document.createElement("object");
 
     tag.setAttribute("data", this.url);
@@ -122,12 +117,12 @@ export default class RiseSlides extends RiseElement {
     tag.setAttribute("mozallowfullscreen", "true");
     tag.setAttribute("webkitallowfullscreen", "true");
     tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
-    // tag.setAttribute("onload", "console.log('onload')");
 
     tag.onload = () => this._onObjectLoad();
 
     this.shadowRoot.appendChild(tag);
   }
+
 }
 
 customElements.define("rise-slides", RiseSlides);

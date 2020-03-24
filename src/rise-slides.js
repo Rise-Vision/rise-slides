@@ -7,19 +7,7 @@ export default class RiseSlides extends RiseElement {
 
   static get template() {
     return html`
-      <object
-        data="[[url]]"
-        width="100%"
-        height="100%"
-        frameborder="0"
-        allowTransparency="true"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-        on-load="_onObjectLoad"
-        on-error="_onObjectError"
-        sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
-      </object>
+      <div></div>
     `;
   }
 
@@ -34,7 +22,7 @@ export default class RiseSlides extends RiseElement {
       },
       url: {
         type: String,
-        computed: "_computeUrl(src, duration, _started, _playing)",
+        computed: "_computeUrl(src, duration, _started)",
         observer: "_urlChanged"
       }
     }
@@ -46,19 +34,16 @@ export default class RiseSlides extends RiseElement {
     this._setVersion( version );
 
     this._started = false;
-    this._playing = false;
     this._loadTimerMillis = 10000;
   }
 
   ready() {
     super.ready();
 
-    this.addEventListener( "rise-presentation-play", () => {
-      this._playing = true;
-    });
-    this.addEventListener( "rise-presentation-stop", () => {
-      this._playing = false;
-    });
+    this.rootDiv = this.shadowRoot.children[0];
+    console.log( `ready ${ this.rootDiv ? "yes" : "no" }` ); // eslint-disable-line no-console
+
+    this.addEventListener( "rise-presentation-play", () => this._refresh());
   }
 
   _shouldPropertyChange(property, value, old) {
@@ -69,9 +54,9 @@ export default class RiseSlides extends RiseElement {
     return super._shouldPropertyChange(property, value, old);
   }
 
-  _computeUrl(src, duration, _started, _playing) {
+  _computeUrl(src, duration, _started) {
 
-    if (!_started || !_playing || !src) {
+    if (!_started || !src) {
       return "about:blank";
     }
 
@@ -88,6 +73,8 @@ export default class RiseSlides extends RiseElement {
   }
 
   _urlChanged() {
+    this._refresh();
+
     clearTimeout(this._loadTimer);
     this._loadTimer = setTimeout(() => this._logLoadingErrorAndRetry(), this._loadTimerMillis);
   }
@@ -106,10 +93,6 @@ export default class RiseSlides extends RiseElement {
     this._loadTimerMillis = 10000;
   }
 
-  _onObjectError(error) {
-    console.log(`on object error: ${JSON.stringify(error)}`); // eslint-disable-line no-console
-  }
-
   _logLoadingErrorAndRetry() {
     if (!RisePlayerConfiguration.isPreview()) {
       super._setUptimeError(true);
@@ -125,7 +108,27 @@ export default class RiseSlides extends RiseElement {
   }
 
   _refresh() {
-    this.src = this.src; // Trigger _computeUrl and force loading
+    if (!this.rootDiv) {
+      console.log("no root div"); // eslint-disable-line no-console
+      return;
+    }
+
+    console.log(`appending: ${this.url}`); // eslint-disable-line no-console
+
+    this.rootDiv.textContent = "";
+    const tag = document.createElement("object");
+
+    tag.setAttribute("data", this.url);
+    tag.setAttribute("width", "100%");
+    tag.setAttribute("height", "100%");
+    tag.setAttribute("frameborder", "0");
+    tag.setAttribute("allowTransparency", "true");
+    tag.setAttribute("allowfullscreen", "true");
+    tag.setAttribute("mozallowfullscreen", "true");
+    tag.setAttribute("webkitallowfullscreen", "true");
+    tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
+
+    this.rootDiv.appendChild(tag);
   }
 }
 

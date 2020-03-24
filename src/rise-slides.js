@@ -127,7 +127,7 @@ export default class RiseSlides extends RiseElement {
     tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
     // tag.setAttribute("onload", "console.log('onload')");
 
-    tag.onload = () => _onObjectLoad();
+    tag.onload = () => this._onObjectLoad();
 
     this.rootDiv.appendChild(tag);
   }

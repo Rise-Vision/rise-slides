@@ -5,12 +5,6 @@ import { version } from "./rise-slides-version.js";
 
 export default class RiseSlides extends RiseElement {
 
-  static get template() {
-    return html`
-      <div></div>
-    `;
-  }
-
   static get properties() {
     return {
       src: {
@@ -40,8 +34,8 @@ export default class RiseSlides extends RiseElement {
   ready() {
     super.ready();
 
-    this.rootDiv = this.shadowRoot.children[0];
-    console.log( `ready ${ this.rootDiv ? "yes" : "no" }` ); // eslint-disable-line no-console
+    this.rootDiv = this.shadowRoot;
+    console.log( `readys ${ this.rootDiv ? "yes" : "no" }` ); // eslint-disable-line no-console
 
     this.addEventListener( "rise-presentation-play", () => this._refresh());
   }

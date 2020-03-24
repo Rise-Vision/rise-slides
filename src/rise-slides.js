@@ -38,9 +38,6 @@ export default class RiseSlides extends RiseElement {
   ready() {
     super.ready();
 
-    this.rootDiv = this.shadowRoot;
-    console.log( `readyt ${ this.rootDiv ? "yes" : "no" }` ); // eslint-disable-line no-console
-
     this.addEventListener( "rise-presentation-play", () => this._refresh());
   }
 
@@ -106,14 +103,14 @@ export default class RiseSlides extends RiseElement {
   }
 
   _refresh() {
-    if (!this.rootDiv) {
-      console.log("no root div"); // eslint-disable-line no-console
+    if (!this.shadowRoot) {
+      console.log("no shadow root"); // eslint-disable-line no-console
       return;
     }
 
     console.log(`appending: ${this.url}`); // eslint-disable-line no-console
 
-    this.rootDiv.textContent = "";
+    this.shadowRoot.textContent = "";
     const tag = document.createElement("object");
 
     tag.setAttribute("data", this.url);
@@ -129,7 +126,7 @@ export default class RiseSlides extends RiseElement {
 
     tag.onload = () => this._onObjectLoad();
 
-    this.rootDiv.appendChild(tag);
+    this.shadowRoot.appendChild(tag);
   }
 }
 

@@ -190,6 +190,14 @@
           assert.equal(change, true);
         });
 
+        test('should compute URL', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          const change = element._computeUrl("http://localhost", 10, true);
+
+          assert(change.startsWith("http://localhost"));
+        });
+
         suite('uptime', () => {
           let element;
 

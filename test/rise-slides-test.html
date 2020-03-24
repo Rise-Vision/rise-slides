@@ -182,6 +182,14 @@
           element._refresh();
         });
 
+        test('should return true if property change is src', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          const change = element._shouldPropertyChange("src");
+
+          assert.equal(change, true);
+        });
+
         suite('uptime', () => {
           let element;
 

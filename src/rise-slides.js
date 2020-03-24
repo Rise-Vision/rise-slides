@@ -5,6 +5,10 @@ import { version } from "./rise-slides-version.js";
 
 export default class RiseSlides extends RiseElement {
 
+  static get template() {
+    return html``;
+  }
+
   static get properties() {
     return {
       src: {

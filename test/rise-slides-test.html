@@ -88,7 +88,7 @@
 
         test('should render object with Slides url', () => {
           const element = fixture('StaticValueTestFixture');
-          const object = element.shadowRoot.children[0];
+          // const object = element.shadowRoot.children[0];
 
           // assert.equal(object.tagName, "OBJECT");
           // assert.equal(object.data, element.url);
@@ -96,7 +96,6 @@
 
         test('should reload object url when src is set to a new URL', () => {
           const element = fixture('StaticValueTestFixture');
-          const object = element.shadowRoot.children[0];
 
           element._playing = true;
           element._handleStart();
@@ -110,7 +109,6 @@
 
         test('should reload object url when src is set to the same URL', () => {
           const element = fixture('StaticValueTestFixture');
-          const object = element.shadowRoot.children[0];
 
           element._handleStart();
 
@@ -123,7 +121,7 @@
 
         test('should load blank url when src is cleared', () => {
           const element = fixture('StaticValueTestFixture');
-          const object = element.shadowRoot.children[0];
+          // const object = element.shadowRoot.children[0];
 
           element._handleStart();
 
@@ -166,6 +164,12 @@
           element.dispatchEvent(new Event('rise-presentation-play'));
 
           assert.equal(element._refresh.called, true);
+        });
+
+        test('should refresh', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          element._refresh();
         });
 
         suite('uptime', () => {

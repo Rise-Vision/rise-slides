@@ -125,6 +125,8 @@ export default class RiseSlides extends RiseElement {
     tag.setAttribute("mozallowfullscreen", "true");
     tag.setAttribute("webkitallowfullscreen", "true");
     tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
+    tag.setAttribute("onload", "console.log('onload')");
+    tag.setAttribute("on-load", "console.log('on-load')");
 
     this.rootDiv.appendChild(tag);
   }

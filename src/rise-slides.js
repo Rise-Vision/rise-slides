@@ -39,7 +39,7 @@ export default class RiseSlides extends RiseElement {
     super.ready();
 
     this.rootDiv = this.shadowRoot;
-    console.log( `readys ${ this.rootDiv ? "yes" : "no" }` ); // eslint-disable-line no-console
+    console.log( `readyt ${ this.rootDiv ? "yes" : "no" }` ); // eslint-disable-line no-console
 
     this.addEventListener( "rise-presentation-play", () => this._refresh());
   }
@@ -125,8 +125,9 @@ export default class RiseSlides extends RiseElement {
     tag.setAttribute("mozallowfullscreen", "true");
     tag.setAttribute("webkitallowfullscreen", "true");
     tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
-    tag.setAttribute("onload", "console.log('onload')");
-    tag.setAttribute("on-load", "console.log('on-load')");
+    // tag.setAttribute("onload", "console.log('onload')");
+
+    tag.onload = () => _onObjectLoad();
 
     this.rootDiv.appendChild(tag);
   }

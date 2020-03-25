@@ -6,20 +6,7 @@ import { version } from "./rise-slides-version.js";
 export default class RiseSlides extends RiseElement {
 
   static get template() {
-    return html`
-      <object
-        data="[[url]]"
-        width="100%"
-        height="100%"
-        frameborder="0"
-        allowTransparency="true"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-        on-load="_onObjectLoad"
-        sandbox="allow-forms allow-same-origin allow-scripts allow-presentation">
-      </object>
-    `;
+    return html``;
   }
 
   static get properties() {
@@ -81,6 +68,8 @@ export default class RiseSlides extends RiseElement {
   }
 
   _urlChanged() {
+    this._refresh();
+
     clearTimeout(this._loadTimer);
     this._loadTimer = setTimeout(() => this._logLoadingErrorAndRetry(), this._loadTimerMillis);
   }
@@ -112,8 +101,26 @@ export default class RiseSlides extends RiseElement {
   }
 
   _refresh() {
-    this.src = this.src; // eslint-disable-line no-self-assign
+    this.shadowRoot.textContent = "";
+
+    // object tag is dynamically created each time to prevent network error issue - https://github.com/Rise-Vision/html-template-library/issues/1043
+    const tag = document.createElement("object");
+
+    tag.setAttribute("data", this.url);
+    tag.setAttribute("width", "100%");
+    tag.setAttribute("height", "100%");
+    tag.setAttribute("frameborder", "0");
+    tag.setAttribute("allowTransparency", "true");
+    tag.setAttribute("allowfullscreen", "true");
+    tag.setAttribute("mozallowfullscreen", "true");
+    tag.setAttribute("webkitallowfullscreen", "true");
+    tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
+
+    tag.onload = () => this._onObjectLoad();
+
+    this.shadowRoot.appendChild(tag);
   }
+
 }
 
 customElements.define("rise-slides", RiseSlides);

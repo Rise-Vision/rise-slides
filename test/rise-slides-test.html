@@ -95,7 +95,6 @@
 
         test('should reload object url when src is set to a new URL', () => {
           const element = fixture('StaticValueTestFixture');
-          const object = element.shadowRoot.children[0];
 
           element._handleStart();
 
@@ -108,7 +107,6 @@
 
         test('should reload object url when src is set to the same URL', () => {
           const element = fixture('StaticValueTestFixture');
-          const object = element.shadowRoot.children[0];
 
           element._handleStart();
 
@@ -131,6 +129,7 @@
 
         test('should set default 10 seconds duration', () => {
           const element = fixture('DefaultDurationValueTestFixture');
+
           element._handleStart();
 
           assert.equal(element.duration, 10);
@@ -155,6 +154,16 @@
           assert.equal(element._started, true);
         });
 
+        test('should refresh when URL is changed', () => {
+          const element = fixture('EmptySrcTestFixture');
+
+          sandbox.stub(element, '_refresh');
+
+          element._urlChanged();
+
+          assert.equal(element._refresh.called, true);
+        });
+
         test('should refresh on rise-presentation-play event', () => {
           const element = fixture('StaticValueTestFixture');
 
@@ -163,6 +172,49 @@
           element.dispatchEvent(new Event('rise-presentation-play'));
 
           assert.equal(element._refresh.called, true);
+        });
+
+        test('should refresh', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          element._refresh();
+
+          const object = element.shadowRoot.children[0];
+
+          assert.equal(object.tagName, "OBJECT");
+          assert.equal(object.data, element.url);
+        });
+
+        test('should return true if property change is src', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          const change = element._shouldPropertyChange("src");
+
+          assert.equal(change, true);
+        });
+
+        test('should compute URL', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          const change = element._computeUrl("http://localhost", 10, true);
+
+          assert(change.startsWith("http://localhost"));
+        });
+
+        test('should compute empty page if no source', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          const change = element._computeUrl("", 10, true);
+
+          assert.equal(change, "about:blank");
+        });
+
+        test('should compute empty page if not started', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          const change = element._computeUrl("http://localhost", 10, false);
+
+          assert.equal(change, "about:blank");
         });
 
         suite('uptime', () => {

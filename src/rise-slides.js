@@ -81,8 +81,6 @@ export default class RiseSlides extends RiseElement {
   }
 
   _onObjectLoad() {
-    console.log("on object load"); // eslint-disable-line no-console
-
     clearTimeout(this._loadTimer);
     super._setUptimeError(false);
     this._loadTimerMillis = 10000;

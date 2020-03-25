@@ -112,7 +112,7 @@ export default class RiseSlides extends RiseElement {
   }
 
   _refresh() {
-    this.src = this.src; // Trigger _computeUrl and force loading
+    this.src = this.src; // eslint-disable-line no-self-assign
   }
 }
 

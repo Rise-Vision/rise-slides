@@ -209,6 +209,21 @@
           assert.equal(change, "about:blank");
         });
 
+        test('should call hide cursor', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          return new Promise(res => {
+            element._hideCursor = res;
+            element._refresh();
+          });
+        });
+
+        test('should handle null element object', () => {
+          const element = fixture('StaticValueTestFixture');
+
+          element._hideCursor(null);
+        });
+
         test('should compute empty page if not started', () => {
           const element = fixture('StaticValueTestFixture');
 

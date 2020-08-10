@@ -86,6 +86,13 @@ export default class RiseSlides extends RiseElement {
     this._loadTimerMillis = 10000;
   }
 
+  _hideCursor(tag) {
+    const slidesHTML = tag && tag.contentDocument && tag.contentDocument.querySelector("html");
+
+    if (!slidesHTML) {return;}
+    slidesHTML.style.cursor = "none";
+  }
+
   _logLoadingErrorAndRetry() {
     if (!RisePlayerConfiguration.isPreview()) {
       super._setUptimeError(true);
@@ -116,7 +123,7 @@ export default class RiseSlides extends RiseElement {
     tag.setAttribute("webkitallowfullscreen", "true");
     tag.setAttribute("sandbox", "allow-forms allow-same-origin allow-scripts allow-presentation");
 
-    tag.onload = () => this._onObjectLoad();
+    tag.onload = () => {this._onObjectLoad(); this._hideCursor(tag);}
 
     this.shadowRoot.appendChild(tag);
   }

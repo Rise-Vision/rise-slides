@@ -37,8 +37,10 @@ export default class RiseSlides extends RiseElement {
 
   ready() {
     super.ready();
+  }
 
-    this.addEventListener( "rise-presentation-play", () => this._refresh());
+  _handleRisePresentationPlay() {
+    this._refresh();
   }
 
   _shouldPropertyChange(property, value, old) {
@@ -96,9 +98,9 @@ export default class RiseSlides extends RiseElement {
   _logLoadingErrorAndRetry() {
     if (!RisePlayerConfiguration.isPreview()) {
       super._setUptimeError(true);
-      const level = this._loadTimerMillis > 20000 ? "error" : "warning";
+      const level = this._loadTimerMillis > 20000 ? RiseSlides.LOG_TYPE_ERROR : RiseSlides.LOG_TYPE_WARNING;
 
-      super.log(level, "loading slides timeout", this.url);
+      super.log(level, "loading slides timeout", {errorCode: "E000000035"}, this.url);
     }
 
     const oneHour = 1000 * 60 * 60;

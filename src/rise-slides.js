@@ -99,7 +99,7 @@ export default class RiseSlides extends RiseElement {
     super._setUptimeError(true);
     const level = this._loadTimerMillis > 20000 ? RiseSlides.LOG_TYPE_ERROR : RiseSlides.LOG_TYPE_WARNING;
 
-    super.log(level, "loading slides timeout", {errorCode: "E000000035"}, this.url);
+    super.log(level, "loading slides timeout", {errorCode: "E000000035"}, {url: this.url});
 
     const oneHour = 1000 * 60 * 60;
 

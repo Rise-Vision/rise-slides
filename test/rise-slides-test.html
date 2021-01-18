@@ -272,11 +272,6 @@
             assert.isTrue(element.log.calledWith("error"));
           });
 
-          test('should not log failure in preview', () => {
-            element._logLoadingErrorAndRetry();
-
-            assert.isFalse(element._setUptimeError.called);
-          });
         });
 
       });

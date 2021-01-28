@@ -2,14 +2,59 @@
 
 `rise-slides` is a Polymer 3 Web Component that renders a Google Slides presentation
 
-#### Example
+## Usage For Designers
 
+The below illustrates simple usage of the component.
+A complete setup of the component can be found [here](https://github.com/Rise-Vision/html-template-library/tree/master/example-slides-component).
+
+### Integration in a Template
+#### HTML
+Add a reference to the component in the `<head>` section of **template.html**.
+```
+<script src="https://widgets.risevision.com/beta/components/rise-slides/1/rise-slides.js"></script>
+```
+
+Add an instance of the component to `<body>` section of **template.html**.
 ```
   <rise-slides
     id="presentation"
     src="https://docs.google.com/presentation/d/e/2PACX-1vRK9noBs7XGTp-jRNkkxSR_bvTIPFq415ff2EKZIpUAOQJcYoV42XtxPGnGEd6bvjl36yZvjcn_eYDS/embed" duration="3000">
   </rise-slides>
 ```
+#### JS
+To test the template in a browser outside Player/Apps, add the following lines (replacing with the appropriate element id to **main.js**. Note: Comment before committing.
+
+```
+function configureComponents {
+const slides = document.getElementById( "slides" );
+
+//Uncomment when testing in browser
+RisePlayerConfiguration.Helpers.sendStartEvent( slides );
+}
+
+window.addEventListener( "rise-components-ready", configureComponents );
+```
+#### JSON
+For npm to install dependencies neccesssary add refrences to component repo in **package.json**.
+```
+"dependencies": {
+    "rise-image": "git://github.com/Rise-Vision/rise-image.git",
+    "@webcomponents/webcomponentsjs": "^2.1.1"
+    ...
+  },
+```
+
+#### Build and Test Locally in Browswer 
+Execute the following commands in Terminal and preview template.html in browser using a simple server.  example: http://localhost:8081/build/prod/src/template.html:
+
+```
+npm install
+npm install -g polymer-cli@1.9.7
+npm run build
+python -m SimpleHTTPServer 8081
+```
+For more specifics please see: HTML Template - Build and Test Locally in Browser Documentation. 
+https://docs.google.com/document/d/1_xgKe790ZuweDVg-Abj3032an6we7YLH_lQPpe-M88M/edit#bookmark=id.21c68d5f8a7c
 
 ### Labels
 
@@ -40,16 +85,15 @@ This component receives the following list of attributes:
 ### Events
 
 The component sends the following events:
-
 - **_configured_**: The component has initialized what it requires to and is ready to handle a _start_ event.
 
-## Built With
+
+## Development
+### Built With
 - [Polymer 3](https://www.polymer-project.org/)
 - [Polymer CLI](https://github.com/Polymer/tools/tree/master/packages/cli)
 - [WebComponents Polyfill](https://www.webcomponents.org/polyfills/)
 - [npm](https://www.npmjs.org)
-
-## Development
 
 ### Local Development Build
 Clone this repo and change into this project directory.

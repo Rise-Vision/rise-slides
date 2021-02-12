@@ -37,10 +37,9 @@ window.addEventListener( "rise-components-ready", configureComponents );
 #### JSON
 For npm to install dependencies neccesssary add refrences to component repo in **package.json**.
 ```
-"dependencies": {
-    "rise-image": "git://github.com/Rise-Vision/rise-image.git",
+ "dependencies": {
+    "@polymer/polymer": "3.1.0",
     "@webcomponents/webcomponentsjs": "^2.1.1"
-    ...
   },
 ```
 

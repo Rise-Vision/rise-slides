@@ -1,6 +1,6 @@
 {
   "name": "rise-slides",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Rise Vision Slides Component",
   "author": "Rise Vision",
   "scripts": {
@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "url-polyfill": "^1.0.12",
-    "rise-common-component": "git://github.com/Rise-Vision/rise-common-component.git#v1.8.3"
+    "rise-common-component": "git://github.com/Rise-Vision/rise-common-component.git#v1.9.2"
   }
 }
